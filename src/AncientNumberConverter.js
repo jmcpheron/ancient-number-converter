@@ -21,6 +21,22 @@ const AncientNumberConverter = () => {
     10: '𒌋'  // Chevron
   };
 
+  const romanSymbols = [
+    { value: 1000, symbol: 'M' },
+    { value: 900, symbol: 'CM' },
+    { value: 500, symbol: 'D' },
+    { value: 400, symbol: 'CD' },
+    { value: 100, symbol: 'C' },
+    { value: 90, symbol: 'XC' },
+    { value: 50, symbol: 'L' },
+    { value: 40, symbol: 'XL' },
+    { value: 10, symbol: 'X' },
+    { value: 9, symbol: 'IX' },
+    { value: 5, symbol: 'V' },
+    { value: 4, symbol: 'IV' },
+    { value: 1, symbol: 'I' }
+  ];
+
   const convertToMayan = (num) => {
     if (num < 0 || num > 7999999) return ['Invalid input'];
     
@@ -80,6 +96,19 @@ const AncientNumberConverter = () => {
     return result;
   };
 
+  const convertToRoman = (num) => {
+    if (num < 1 || num > 3999) return ['Invalid input'];
+    
+    let result = '';
+    for (let { value, symbol } of romanSymbols) {
+      while (num >= value) {
+        result += symbol;
+        num -= value;
+      }
+    }
+    return [result];
+  };
+
   const handleInputChange = (e) => {
     const input = e.target.value;
     setBase10Number(input);
@@ -108,6 +137,17 @@ const AncientNumberConverter = () => {
         <div className="flex flex-wrap justify-center gap-2">
           {egyptianNumber.map((symbol, index) => (
             <div key={index} className="h-12 min-w-12 px-2 flex items-center justify-center border border-gray-300 rounded-md text-2xl">
+              {symbol}
+            </div>
+          ))}
+        </div>
+      );
+    } else if (activeTab === 'roman') {
+      const romanNumber = convertToRoman(num);
+      return (
+        <div className="flex flex-wrap justify-center gap-2">
+          {romanNumber.map((symbol, index) => (
+            <div key={index} className="h-12 min-w-12 px-2 flex items-center justify-center border border-gray-300 rounded-md text-xl font-serif">
               {symbol}
             </div>
           ))}
@@ -158,6 +198,19 @@ const AncientNumberConverter = () => {
           ))}
         </div>
       );
+    } else if (activeTab === 'roman') {
+      return (
+        <div className="grid grid-cols-2 gap-2">
+          {romanSymbols.map(({ value, symbol }) => (
+            <div key={symbol} className="flex items-center space-x-2">
+              <div className="h-8 min-w-8 px-1 flex items-center justify-center border border-gray-300 rounded-md font-serif">
+                {symbol}
+              </div>
+              <span>{value}</span>
+            </div>
+          ))}
+        </div>
+      );
     } else {
       return (
         <div className="grid grid-cols-2 gap-2">
@@ -199,6 +252,12 @@ const AncientNumberConverter = () => {
           onClick={() => setActiveTab('egyptian')}
         >
           Egyptian
+        </button>
+        <button
+          className={`px-4 py-2 ${activeTab === 'roman' ? 'border-b-2 border-blue-500' : ''}`}
+          onClick={() => setActiveTab('roman')}
+        >
+          Roman
         </button>
         <button
           className={`px-4 py-2 ${activeTab === 'babylonian' ? 'border-b-2 border-blue-500' : ''}`}
