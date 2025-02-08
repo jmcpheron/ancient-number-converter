@@ -147,7 +147,10 @@ const AncientNumberConverter = () => {
       return (
         <div className="flex flex-wrap justify-center gap-2">
           {romanNumber.map((symbol, index) => (
-            <div key={index} className="h-12 min-w-12 px-2 flex items-center justify-center border border-gray-300 rounded-md text-xl font-serif">
+            <div 
+              key={index} 
+              className="h-12 min-w-12 px-4 flex items-center justify-center border-2 border-purple-800 rounded-md text-2xl font-['Cinzel'] text-purple-900 bg-gradient-to-b from-yellow-50 to-yellow-100 hover:from-yellow-100 hover:to-yellow-200 transition-colors shadow-sm"
+            >
               {symbol}
             </div>
           ))}
@@ -200,15 +203,21 @@ const AncientNumberConverter = () => {
       );
     } else if (activeTab === 'roman') {
       return (
-        <div className="grid grid-cols-2 gap-2">
-          {romanSymbols.map(({ value, symbol }) => (
-            <div key={symbol} className="flex items-center space-x-2">
-              <div className="h-8 min-w-8 px-1 flex items-center justify-center border border-gray-300 rounded-md font-serif">
-                {symbol}
+        <div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+            {romanSymbols.map(({ value, symbol }) => (
+              <div key={symbol} className="flex items-center space-x-3 bg-gradient-to-b from-purple-50 to-purple-100 p-3 rounded-lg shadow-sm">
+                <div className="h-10 min-w-10 px-2 flex items-center justify-center border-2 border-purple-700 rounded-md font-['Cinzel'] text-xl text-purple-900 bg-yellow-50">
+                  {symbol}
+                </div>
+                <span className="text-purple-900 font-medium">{value.toLocaleString()}</span>
               </div>
-              <span>{value}</span>
-            </div>
-          ))}
+            ))}
+          </div>
+          <p className="text-sm text-purple-700 mt-2 font-medium">
+            Roman numerals use combinations of letters to represent numbers. Each symbol represents a fixed value, 
+            and when smaller values precede larger ones, they are subtracted.
+          </p>
         </div>
       );
     } else {
