@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/ancient-number-converter/static/css/main.64d97af0.css",
+    "main.js": "/ancient-number-converter/static/js/main.7869ed48.js",
+    "static/js/453.021b56d5.chunk.js": "/ancient-number-converter/static/js/453.021b56d5.chunk.js",
+    "index.html": "/ancient-number-converter/index.html",
+    "main.64d97af0.css.map": "/ancient-number-converter/static/css/main.64d97af0.css.map",
+    "main.7869ed48.js.map": "/ancient-number-converter/static/js/main.7869ed48.js.map",
+    "453.021b56d5.chunk.js.map": "/ancient-number-converter/static/js/453.021b56d5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.64d97af0.css",
+    "static/js/main.7869ed48.js"
+  ]
+}
