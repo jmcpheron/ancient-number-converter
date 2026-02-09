@@ -63,6 +63,15 @@ function renderLegendContent(systemId) {
     case 'chineseRod':
       return `<div class="space-y-3">
         <div>
+          <p class="font-crimson text-sm text-stone-500 mb-2">Zero (any place):</p>
+          <div class="grid grid-cols-5 gap-2">
+            <div class="flex items-center space-x-1 bg-white/30 p-1 rounded">
+              <span class="text-xl">〇</span>
+              <span class="font-crimson text-xs text-stone-500">=0</span>
+            </div>
+          </div>
+        </div>
+        <div>
           <p class="font-crimson text-sm text-stone-500 mb-2">Vertical (ones, hundreds, ten-thousands):</p>
           <div class="grid grid-cols-5 gap-2">
             ${Object.entries(verticalDigits).filter(([k]) => k !== '0').map(([value, symbol]) => `
