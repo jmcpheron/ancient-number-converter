@@ -30,9 +30,15 @@ function renderSkeleton() {
             class="px-6 py-2 font-cinzel text-sm rounded-lg transition-colors ${navBtnCls(s.showQuiz)}">Quiz</button>
         </div>
         <div id="main-area"></div>
-        <footer class="text-center mt-12 py-6 border-t border-stone-300">
+        <footer class="text-center mt-12 py-6 border-t border-stone-300 space-y-2">
           <p class="font-crimson text-sm text-stone-400">
             Ancient Number Converter — Exploring mathematics across civilizations
+          </p>
+          <p class="font-crimson text-xs text-stone-400">
+            <a href="https://github.com/jmcpheron/ancient-number-converter" target="_blank" rel="noopener noreferrer"
+              class="underline hover:text-stone-600 transition-colors">View on GitHub</a>
+            <span class="mx-2">·</span>
+            Last updated ${__BUILD_DATE__}
           </p>
         </footer>
       </div>
