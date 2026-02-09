@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-parchment font-crimson text-stone-800;
+  }
+}
+
+/* Range slider styling */
+input[type="range"]::-webkit-slider-thumb {
+  @apply appearance-none w-5 h-5 bg-stone-600 rounded-full cursor-pointer;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  @apply w-5 h-5 bg-stone-600 rounded-full cursor-pointer border-0;
+}
+
+/* Subtle parchment texture via CSS */
+.bg-gradient-to-b.from-parchment.to-parchment-dark {
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, #FAF3E0, #F5E6C8);
+}
+
+/* Number input: hide spinner arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Step reveal animation with opacity starting at 0 */
+.animate-stepReveal {
+  opacity: 0;
+}

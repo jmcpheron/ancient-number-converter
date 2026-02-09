@@ -1,0 +1,37 @@
+const egyptianSymbols = {
+  1: '𓏺', 10: '𓎆', 100: '𓍢', 1000: '𓆼', 10000: '𓂭', 100000: '𓁨', 1000000: '𓆐'
+};
+
+const egyptianNames = {
+  1: 'stroke', 10: 'heel bone', 100: 'coil of rope', 1000: 'lotus',
+  10000: 'finger', 100000: 'tadpole', 1000000: 'god'
+};
+
+export function convertToEgyptian(num) {
+  if (num < 1 || num > 9999999) return { result: ['Invalid input'], steps: [] };
+
+  const result = [];
+  const steps = [];
+  const values = Object.keys(egyptianSymbols).map(Number).sort((a, b) => b - a);
+  let remaining = num;
+
+  for (let value of values) {
+    let count = 0;
+    while (remaining >= value) {
+      result.push(egyptianSymbols[value]);
+      remaining -= value;
+      count++;
+    }
+    if (count > 0) {
+      steps.push({
+        value: value * count,
+        symbol: egyptianSymbols[value].repeat(count),
+        explanation: `${value.toLocaleString()} × ${count} → ${egyptianSymbols[value].repeat(count)} (${count} ${egyptianNames[value]}${count > 1 ? 's' : ''})`
+      });
+    }
+  }
+
+  return { result, steps };
+}
+
+export { egyptianSymbols, egyptianNames };
