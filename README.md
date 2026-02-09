@@ -29,7 +29,7 @@ Convert modern numbers into six ancient numeral systems and back again. Explore 
 - **Vite 7** — vanilla JS, no framework
 - **Tailwind CSS 3** — utility-first styling
 - **Vitest** — 44 unit tests covering all converters and parsers
-- **GitHub Pages** — automated deployment via `gh-pages`
+- **GitHub Actions** — CI/CD with auto-deploy to GitHub Pages
 
 ## Getting Started
 
@@ -38,8 +38,13 @@ npm install        # install dependencies
 npm run dev        # start dev server (http://localhost:5173)
 npm test           # run tests (44 tests)
 npm run build      # production build → dist/
-npm run deploy     # deploy to GitHub Pages
 ```
+
+## Deployment
+
+Pushing to `main` automatically runs tests and deploys to GitHub Pages via GitHub Actions. Pull requests run tests only — no deploy until merged.
+
+The workflow lives in `.github/workflows/deploy.yml`.
 
 ## Project Structure
 
