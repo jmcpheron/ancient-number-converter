@@ -177,12 +177,14 @@ function handleClick(e) {
     return;
   }
 
-  // Random number
+  // Random number and system
   if (target.closest('[data-action="random"]')) {
-    const system = numberSystems[s.activeTab];
-    const [min, max] = system ? system.range : [0, 9999999];
+    const systemIds = Object.keys(numberSystems);
+    const randomTab = systemIds[Math.floor(Math.random() * systemIds.length)];
+    const system = numberSystems[randomTab];
+    const [min, max] = system.range;
     const randomNum = Math.floor(Math.random() * (Math.min(max, 9999) - min + 1)) + min;
-    setState({ number: String(randomNum) });
+    setState({ activeTab: randomTab, number: String(randomNum) });
     return;
   }
 
