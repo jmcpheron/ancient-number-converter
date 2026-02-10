@@ -5,6 +5,7 @@ import { babylonianSymbols } from '../converters/babylonian.js';
 import { romanSymbols } from '../converters/roman.js';
 import { verticalDigits, horizontalDigits } from '../converters/chineseRod.js';
 import { atticSymbols } from '../converters/greekAttic.js';
+import { quipuSymbols } from '../converters/quipu.js';
 
 function esc(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -106,6 +107,48 @@ function renderLegendContent(systemId) {
             </div>
           </div>
         `).join('')}
+      </div>`;
+
+    case 'quipu':
+      return `<div class="space-y-3">
+        <div>
+          <p class="font-crimson text-sm text-stone-500 mb-2">Ones place:</p>
+          <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
+            <div class="flex items-center space-x-2 bg-white/30 p-2 rounded-lg">
+              <div class="h-10 min-w-10 flex items-center justify-center border border-inca/30 rounded-md bg-orange-50/50 text-xl">${esc(quipuSymbols.figureEight)}</div>
+              <span class="font-crimson text-sm text-stone-700">1</span>
+            </div>
+            ${[2,3,4,5,6,7,8,9].map(d => `
+              <div class="flex items-center space-x-2 bg-white/30 p-2 rounded-lg">
+                <div class="h-10 min-w-10 flex items-center justify-center border border-inca/30 rounded-md bg-orange-50/50 text-xl">${esc(quipuSymbols.longKnot.repeat(d))}</div>
+                <span class="font-crimson text-sm text-stone-700">${d}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div>
+          <p class="font-crimson text-sm text-stone-500 mb-2">Tens, hundreds, thousands (simple knots):</p>
+          <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
+            ${[1,2,3,4,5,6,7,8,9].map(d => `
+              <div class="flex items-center space-x-2 bg-white/30 p-2 rounded-lg">
+                <div class="h-10 min-w-10 flex items-center justify-center border border-inca/30 rounded-md bg-orange-50/50 text-xl">${esc(quipuSymbols.simpleKnot.repeat(d))}</div>
+                <span class="font-crimson text-sm text-stone-700">${d}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div>
+          <p class="font-crimson text-sm text-stone-500 mb-2">Zero (any place):</p>
+          <div class="grid grid-cols-5 gap-2">
+            <div class="flex items-center space-x-2 bg-white/30 p-1 rounded">
+              <span class="text-xl">${esc(quipuSymbols.zero)}</span>
+              <span class="font-crimson text-xs text-stone-500">=0</span>
+            </div>
+          </div>
+        </div>
+        <p class="font-crimson text-sm text-stone-500">
+          Base-10 positional system read top to bottom. Each position on the cord represents a power of 10.
+        </p>
       </div>`;
 
     default:

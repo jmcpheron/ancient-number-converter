@@ -76,6 +76,19 @@ const historicalContent = {
       { title: 'MacTutor – Greek Numerals', url: 'https://mathshistory.st-andrews.ac.uk/HistTopics/Greek_numerals/' },
       { title: 'EpiDoc Guidelines – Acrophonic numerals', url: 'https://epidoc.stoa.org/gl/latest/app-acrophonic.html' }
     ]
+  },
+  quipu: {
+    overview: 'Quipu (khipu) are knotted-string devices used across the Andes for centuries before and throughout the Inca Empire to record numerical and possibly narrative information using a base-10 positional system.',
+    facts: [
+      'Each pendant cord encodes a decimal number with knot clusters spaced along its length — the ones place sits nearest the free end, with tens, hundreds, and thousands ascending toward the primary cord.',
+      'Three knot types distinguish place values: clusters of simple overhead knots mark tens and above, multi-turn long knots mark digits 2–9 in the ones place, and a single figure-eight knot marks 1 in the ones place.',
+      'Zero is represented by the absence of knots at a given position, so the spacing between knot clusters is essential for reading the correct value.'
+    ],
+    usage: 'Inca administrators (quipucamayocs) used quipu for census tallies, tribute records, and storehouse inventories across the empire\'s road network — the converter maps each decimal digit to its corresponding knot type and position.',
+    sources: [
+      { title: 'Quipu (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Quipu' },
+      { title: 'Khipu Field Guide – Harvard', url: 'https://khipufieldguide.fas.harvard.edu/' }
+    ]
   }
 };
 

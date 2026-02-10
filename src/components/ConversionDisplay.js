@@ -7,6 +7,7 @@ const accentClasses = {
   imperial: 'border-imperial/30 bg-gradient-to-b from-purple-50/50 to-purple-100/30',
   vermilion: 'border-vermilion/30 bg-gradient-to-b from-red-50/50 to-red-100/30',
   mediterranean: 'border-mediterranean/30 bg-gradient-to-b from-blue-50/50 to-blue-100/30',
+  inca: 'border-inca/30 bg-gradient-to-b from-orange-50/50 to-orange-100/30',
 };
 
 const symbolClasses = {
@@ -16,6 +17,7 @@ const symbolClasses = {
   imperial: 'border-imperial/40 bg-purple-50 font-cinzel text-purple-900',
   vermilion: 'border-vermilion/40 bg-red-50',
   mediterranean: 'border-mediterranean/40 bg-blue-50 font-cinzel text-blue-900',
+  inca: 'border-inca/40 bg-orange-50',
 };
 
 function esc(str) {

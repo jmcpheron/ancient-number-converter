@@ -4,6 +4,7 @@ import { convertToBabylonian, babylonianSymbols } from '../converters/babylonian
 import { convertToRoman, romanSymbols } from '../converters/roman';
 import { convertToChineseRod, verticalDigits, horizontalDigits } from '../converters/chineseRod';
 import { convertToGreekAttic, atticSymbols } from '../converters/greekAttic';
+import { convertToQuipu, quipuSymbols } from '../converters/quipu';
 
 const numberSystems = {
   mayan: {
@@ -84,6 +85,19 @@ const numberSystems = {
     region: 'Ancient Greece',
     description: 'Acrophonic additive system using initial letters',
     renderMode: 'text',
+  },
+  quipu: {
+    id: 'quipu',
+    name: 'Quipu',
+    convert: convertToQuipu,
+    symbols: quipuSymbols,
+    range: [1, 99999],
+    base: 10,
+    color: 'inca',
+    era: '~2600 BC – 1532 AD',
+    region: 'Andes (Inca Empire)',
+    description: 'Base-10 knotted-string recording system',
+    renderMode: 'vertical',
   }
 };
 

@@ -4,6 +4,7 @@ import { convertToBabylonian } from '../babylonian';
 import { convertToRoman } from '../roman';
 import { convertToChineseRod } from '../chineseRod';
 import { convertToGreekAttic } from '../greekAttic';
+import { convertToQuipu } from '../quipu';
 
 // ─── Roman Numerals ─────────────────────────────────────────────────────────
 
@@ -533,5 +534,130 @@ describe('Greek Attic converter', () => {
 
   test('rejects values over 99999', () => {
     expect(convertToGreekAttic(100000).result).toEqual(['Invalid input']);
+  });
+});
+
+// ─── Quipu Numerals ──────────────────────────────────────────────────────────
+
+describe('Quipu converter', () => {
+  test('converts 1 to figure-eight knot', () => {
+    const { result } = convertToQuipu(1);
+    expect(result).toEqual(['∞']);
+  });
+
+  test('converts 2 to two-turn long knot', () => {
+    const { result } = convertToQuipu(2);
+    expect(result).toEqual(['◎◎']);
+  });
+
+  test('converts 5 to five-turn long knot', () => {
+    const { result } = convertToQuipu(5);
+    expect(result).toEqual(['◎◎◎◎◎']);
+  });
+
+  test('converts 9 to nine-turn long knot', () => {
+    const { result } = convertToQuipu(9);
+    expect(result).toEqual(['◎◎◎◎◎◎◎◎◎']);
+  });
+
+  test('converts 10 to one simple knot + zero', () => {
+    const { result } = convertToQuipu(10);
+    expect(result.length).toBe(2);
+    expect(result[0]).toBe('—');  // ones = 0
+    expect(result[1]).toBe('●'); // tens = 1
+  });
+
+  test('converts 42 to two positions', () => {
+    const { result } = convertToQuipu(42);
+    expect(result.length).toBe(2);
+    expect(result[0]).toBe('◎◎');   // ones = 2 (long knot)
+    expect(result[1]).toBe('●●●●'); // tens = 4 (simple knots)
+  });
+
+  test('converts 100 to three positions with zeros', () => {
+    const { result } = convertToQuipu(100);
+    expect(result.length).toBe(3);
+    expect(result[0]).toBe('—');  // ones = 0
+    expect(result[1]).toBe('—');  // tens = 0
+    expect(result[2]).toBe('●'); // hundreds = 1
+  });
+
+  test('converts 101 with zero in tens place', () => {
+    const { result } = convertToQuipu(101);
+    expect(result.length).toBe(3);
+    expect(result[0]).toBe('∞');  // ones = 1 (figure-eight)
+    expect(result[1]).toBe('—');  // tens = 0
+    expect(result[2]).toBe('●'); // hundreds = 1
+  });
+
+  test('converts 1234 correctly', () => {
+    const { result } = convertToQuipu(1234);
+    expect(result.length).toBe(4);
+    expect(result[0]).toBe('◎◎◎◎');    // ones = 4 (long knot)
+    expect(result[1]).toBe('●●●');      // tens = 3 (simple knots)
+    expect(result[2]).toBe('●●');        // hundreds = 2
+    expect(result[3]).toBe('●');         // thousands = 1
+  });
+
+  test('converts 99999 (max)', () => {
+    const { result } = convertToQuipu(99999);
+    expect(result.length).toBe(5);
+    expect(result[0]).toBe('◎◎◎◎◎◎◎◎◎');       // ones = 9
+    expect(result[1]).toBe('●●●●●●●●●');         // tens = 9
+    expect(result[2]).toBe('●●●●●●●●●');         // hundreds = 9
+    expect(result[3]).toBe('●●●●●●●●●');         // thousands = 9
+    expect(result[4]).toBe('●●●●●●●●●');         // ten-thousands = 9
+  });
+
+  test('ones place uses figure-eight for 1 and long knots for 2-9', () => {
+    expect(convertToQuipu(1).result[0]).toBe('∞');
+    expect(convertToQuipu(2).result[0]).toBe('◎◎');
+    expect(convertToQuipu(3).result[0]).toBe('◎◎◎');
+    expect(convertToQuipu(11).result[0]).toBe('∞');
+    expect(convertToQuipu(15).result[0]).toBe('◎◎◎◎◎');
+  });
+
+  test('higher places use simple knots', () => {
+    expect(convertToQuipu(10).result[1]).toBe('●');
+    expect(convertToQuipu(50).result[1]).toBe('●●●●●');
+    expect(convertToQuipu(300).result[2]).toBe('●●●');
+  });
+
+  test('steps are in most-to-least significant order', () => {
+    const { steps } = convertToQuipu(1234);
+    expect(steps.length).toBe(4);
+    expect(steps[0].explanation).toContain('thousands');
+    expect(steps[1].explanation).toContain('hundreds');
+    expect(steps[2].explanation).toContain('tens');
+    expect(steps[3].explanation).toContain('ones');
+  });
+
+  test('step explanation describes knot type correctly', () => {
+    const { steps } = convertToQuipu(21);
+    // tens = 2 simple knots, ones = 1 figure-eight
+    expect(steps[0].explanation).toBe('tens: 2 simple knots = 20');
+    expect(steps[1].explanation).toBe('ones: figure-eight knot = 1');
+  });
+
+  test('step explanation for long knots in ones place', () => {
+    const { steps } = convertToQuipu(5);
+    expect(steps[0].explanation).toBe('ones: 5-turn long knot = 5');
+  });
+
+  test('step explanation for zero shows no knots', () => {
+    const { steps } = convertToQuipu(10);
+    expect(steps[1].explanation).toBe('ones: no knots (zero) = 0');
+  });
+
+  test('rejects 0', () => {
+    expect(convertToQuipu(0).result).toEqual(['Invalid input']);
+  });
+
+  test('rejects values over 99999', () => {
+    expect(convertToQuipu(100000).result).toEqual(['Invalid input']);
+  });
+
+  test('rejects negative numbers', () => {
+    expect(convertToQuipu(-1).result).toEqual(['Invalid input']);
   });
 });

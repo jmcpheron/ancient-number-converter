@@ -17,6 +17,7 @@ module.exports = {
         imperial: '#6A0DAD',
         vermilion: '#CC3333',
         mediterranean: '#1E5B94',
+        inca: '#8B5E3C',
       },
       fontFamily: {
         cinzel: ['Cinzel', 'serif'],

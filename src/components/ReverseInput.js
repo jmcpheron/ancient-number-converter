@@ -5,10 +5,12 @@ import { parseBabylonian } from '../converters/parsers/babylonian.js';
 import { parseMayan } from '../converters/parsers/mayan.js';
 import { parseChineseRod } from '../converters/parsers/chineseRod.js';
 import { parseGreekAttic } from '../converters/parsers/greekAttic.js';
+import { parseQuipu } from '../converters/parsers/quipu.js';
 import { egyptianSymbols } from '../converters/egyptian.js';
 import { babylonianSymbols } from '../converters/babylonian.js';
 import { mayanSymbols } from '../converters/mayan.js';
 import { verticalDigits, horizontalDigits } from '../converters/chineseRod.js';
+import { quipuSymbols } from '../converters/quipu.js';
 
 const parserConfigs = {
   roman: { parse: parseRoman, inputType: 'text' },
@@ -17,6 +19,7 @@ const parserConfigs = {
   babylonian: { parse: parseBabylonian, inputType: 'groups' },
   mayan: { parse: parseMayan, inputType: 'symbols' },
   chineseRod: { parse: parseChineseRod, inputType: 'symbols' },
+  quipu: { parse: parseQuipu, inputType: 'symbols' },
 };
 
 const symbolKeyboards = {
@@ -27,6 +30,12 @@ const symbolKeyboards = {
     ...Object.values(verticalDigits).filter(Boolean),
     ...Object.values(horizontalDigits).filter(Boolean),
     '\u3007'
+  ],
+  quipu: [
+    quipuSymbols.zero,
+    quipuSymbols.figureEight,
+    ...Array.from({ length: 8 }, (_, i) => quipuSymbols.longKnot.repeat(i + 2)),
+    ...Array.from({ length: 9 }, (_, i) => quipuSymbols.simpleKnot.repeat(i + 1)),
   ],
 };
 

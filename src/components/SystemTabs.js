@@ -7,6 +7,7 @@ const colorMap = {
   imperial: 'border-imperial bg-imperial/10 text-purple-900',
   vermilion: 'border-vermilion bg-vermilion/10 text-red-900',
   mediterranean: 'border-mediterranean bg-mediterranean/10 text-blue-900',
+  inca: 'border-inca bg-inca/10 text-orange-900',
 };
 
 const inactiveColor = 'border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300';
