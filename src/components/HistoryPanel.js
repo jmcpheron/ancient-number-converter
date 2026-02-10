@@ -39,6 +39,20 @@ export function renderHistoryPanel(systemId) {
           <h4 class="font-cinzel text-sm font-semibold text-stone-600 mb-1">Usage</h4>
           <p class="font-crimson text-sm text-stone-600">${esc(content.usage)}</p>
         </div>
+        ${(content.sources && content.sources.length) ? `
+          <div>
+            <h4 class="font-cinzel text-sm font-semibold text-stone-600 mb-1">Sources</h4>
+            <ul class="space-y-1">
+              ${content.sources.map(source => `
+                <li class="font-crimson text-sm">
+                  <a href="${esc(source.url)}" target="_blank" rel="noopener" class="text-stone-700 underline-offset-2 hover:underline">
+                    ${esc(source.title)}
+                  </a>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        ` : ''}
       </div>
     </div>`;
 }

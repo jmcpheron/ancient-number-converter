@@ -304,7 +304,7 @@ describe('Babylonian converter', () => {
 
 describe('Mayan converter', () => {
   test('converts 0 to shell symbol', () => {
-    expect(convertToMayan(0).result).toEqual(['⠀']);
+    expect(convertToMayan(0).result).toEqual(['𝋠']);
   });
 
   test('converts 1 to single dot', () => {
@@ -328,7 +328,7 @@ describe('Mayan converter', () => {
   test('converts 20 to two positions: [shell, dot]', () => {
     const { result } = convertToMayan(20);
     expect(result.length).toBe(2);
-    expect(result[0]).toBe('⠀'); // ones = 0
+    expect(result[0]).toBe('𝋠'); // ones = 0
     expect(result[1]).toBe('•'); // twenties = 1
   });
 
@@ -342,8 +342,8 @@ describe('Mayan converter', () => {
   test('converts 400 (20²) to three positions', () => {
     const { result } = convertToMayan(400);
     expect(result.length).toBe(3);
-    expect(result[0]).toBe('⠀'); // ones = 0
-    expect(result[1]).toBe('⠀'); // twenties = 0
+    expect(result[0]).toBe('𝋠'); // ones = 0
+    expect(result[1]).toBe('𝋠'); // twenties = 0
     expect(result[2]).toBe('•'); // 400s = 1
   });
 

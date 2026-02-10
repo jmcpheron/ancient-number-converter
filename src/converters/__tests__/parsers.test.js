@@ -154,7 +154,7 @@ describe('Babylonian parser', () => {
 
 describe('Mayan parser', () => {
   test('parses shell to 0', () => {
-    expect(parseMayan(['⠀'])).toEqual({ value: 0, error: null });
+    expect(parseMayan(['𝋠'])).toEqual({ value: 0, error: null });
   });
 
   test('parses single dot to 1', () => {
@@ -172,12 +172,12 @@ describe('Mayan parser', () => {
   });
 
   test('parses 20 (1×20 + 0)', () => {
-    const { value } = parseMayan(['•', '⠀']);
+    const { value } = parseMayan(['•', '𝋠']);
     expect(value).toBe(20);
   });
 
   test('parses 400 (1×400 + 0×20 + 0)', () => {
-    const { value } = parseMayan(['•', '⠀', '⠀']);
+    const { value } = parseMayan(['•', '𝋠', '𝋠']);
     expect(value).toBe(400);
   });
 

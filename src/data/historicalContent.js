@@ -1,69 +1,81 @@
 const historicalContent = {
   mayan: {
-    overview: 'The Maya civilization developed one of the most sophisticated numeral systems in the ancient world. Their vigesimal (base-20) system was one of the first to include a true zero — centuries before the concept appeared in Old World mathematics.',
+    overview: 'Maya scribes built a vigesimal positional numeral system that combines dots, bars, and a dedicated shell glyph for zero — one of the earliest explicit zero symbols.',
     facts: [
-      'The Mayan zero (represented by a shell glyph) predates the Indian zero by several centuries',
-      'Used primarily for astronomical calculations and the famous Long Count calendar',
-      'Numbers were written vertically, with the lowest values at the bottom',
-      'The system used only three symbols: a dot (1), a bar (5), and a shell (0)',
-      'Mayan astronomers calculated the length of the solar year to within seconds of modern measurements'
+      'Digits 0–19 stack up to four dots (ones) over up to three bars (fives) plus the shell glyph for zero, so every higher position is a multiple of 20.',
+      'Numbers are written vertically with the lowest place at the bottom; Long Count dates modify the third position to 18×20 (360) to match the tun calendar cycle.',
+      'Stelae and codices rely on these numerals for precise calendar counts and astronomical tables, which is why the converter stacks place values.'
     ],
-    usage: 'The system was integral to Mayan astronomy, architecture, and their complex calendar systems including the Tzolkin (260-day) and Haab (365-day) cycles.'
+    usage: 'Base-20 arithmetic powered the Tzolk’in, Haab, and Long Count calendars and let astronomer-priests track solar and Venus cycles.',
+    sources: [
+      { title: 'Mayan Numbers Library – Numeration', url: 'https://mayanlibrary.org/mayan-numbers-library/' },
+      { title: 'MAA Convergence – The Mayan Number System', url: 'https://old.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system' }
+    ]
   },
   egyptian: {
-    overview: 'Ancient Egyptian hieroglyphic numerals were a purely additive decimal system. Each power of 10 had its own distinct symbol drawn from nature and daily life — strokes, coils of rope, lotus flowers, and even a figure of a god for one million.',
+    overview: 'Ancient Egyptian hieroglyphic numerals form an additive decimal scheme with distinct glyphs for each power of ten from a single stroke (1) up to the kneeling god Heh (1,000,000).',
     facts: [
-      'Hieroglyphic numbers could be written left-to-right, right-to-left, or top-to-bottom',
-      'The symbol for 1,000,000 depicts a man kneeling with raised arms — the god Heh',
-      'Fractions used the Eye of Horus, with each piece representing a power of 1/2',
-      'Scribes used a shorthand hieratic script for everyday calculations',
-      'The Rhind Mathematical Papyrus (c. 1550 BC) shows sophisticated use of fractions and algebra'
+      'Scribes repeat each power-of-ten glyph up to nine times, so quantities are read by adding repeated symbols with no positional weight or zero.',
+      'The same glyph set inspired cursive hieratic writing seen in the Rhind Mathematical Papyrus, which tabulates fractions and practical problems for royal scribes.',
+      'Iconic glyph names — stroke, heel bone, coil of rope, lotus, pointing finger, tadpole, and god Heh — tie arithmetic to objects from daily life and cosmology.'
     ],
-    usage: 'Used extensively in record-keeping, taxation, construction planning (including the pyramids), and religious texts carved into temple walls.'
+    usage: 'Tax rolls, architectural tallies, and funerary inscriptions all used these additive numerals, so the converter mirrors that behavior by repeating symbols for every unit of a power of ten.',
+    sources: [
+      { title: 'Encyclopaedia Britannica – Egyptian numerals', url: 'https://www.britannica.com/science/numeral/Egyptian-numerals' },
+      { title: 'MAA Convergence – Photo Album of the Rhind Mathematical Papyrus', url: 'https://maa.org/press/periodicals/convergence/photo-album-of-the-rhind-mathematical-papyrus' }
+    ]
   },
   babylonian: {
-    overview: 'The Babylonian number system was sexagesimal (base-60) — an influence that persists today in our 60-second minutes and 360-degree circles. Written on clay tablets using a wedge-shaped stylus, it was one of the earliest positional number systems.',
+    overview: 'The Babylonian sexagesimal system represents digits 0–59 with just two cuneiform wedges (a unit wedge and a ten wedge) and assigns positional weight by powers of 60.',
     facts: [
-      'Our modern timekeeping (60 seconds, 60 minutes) directly derives from this system',
-      'Babylonians had no true zero initially — they used a space, which sometimes caused ambiguity',
-      'They compiled multiplication tables, square root tables, and even tables of Pythagorean triples',
-      'The famous tablet Plimpton 322 (c. 1800 BC) contains a list of Pythagorean triples',
-      'Base-60 was likely chosen because 60 has many divisors (1,2,3,4,5,6,10,12,15,20,30,60)'
+      'Each place represents 1, 60, 3,600, 216,000, and so on, so clay tablets group wedge clusters for each base-60 digit.',
+      'Digits 1–9 repeat the unit wedge while 10, 20, 30, 40, and 50 repeat the corner wedge; combinations fill out all values through 59.',
+      'Early scribes left blank gaps for zero and later added a double-wedge placeholder between non-zero digits, though trailing zeros stayed implicit.'
     ],
-    usage: 'Used for astronomy, land surveying, trade calculations, and architectural planning throughout the Mesopotamian empires.'
+    usage: 'Astronomers, surveyors, and merchants relied on sexagesimal place value for ephemerides, land measures, and interest tables — the converter therefore outputs four base-60 groups up to 12,959,999.',
+    sources: [
+      { title: 'Encyclopaedia Britannica – Babylonian numerals', url: 'https://www.britannica.com/science/numeral/Babylonian-numerals' },
+      { title: 'Sexagesimal (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Sexagesimal' }
+    ]
   },
   roman: {
-    overview: 'Roman numerals evolved from Etruscan number symbols and became the standard numbering system across the Roman Empire. While not positional, the subtractive principle (IV instead of IIII) made them more compact than purely additive systems.',
+    overview: 'Roman numerals descend from Etruscan tally marks and use seven Latin letters (I, V, X, L, C, D, M) to encode values without positional notation or zero.',
     facts: [
-      'Subtractive notation (e.g., IV for 4) was not consistently used until the Middle Ages',
-      'Romans had no symbol for zero — the concept was foreign to their mathematics',
-      'Larger numbers sometimes used a vinculum (bar above) to multiply by 1,000',
-      'Roman numerals are still used today for clock faces, movie sequels, and Super Bowl numbering',
-      'The longest Roman numeral year in modern times is MDCCCLXXXVIII (1888)'
+      'Numbers accumulate symbols in descending order; to avoid four repeats, later conventions introduced subtractive pairs such as IV, IX, XL, XC, CD, and CM.',
+      'A horizontal vinculum drawn above a numeral multiplies it by 1,000 when inscriptions need values above 3,999.',
+      'Because no symbol for zero exists, blank spaces or words had to convey nothingness, so everyday usage stayed within a few thousand.'
     ],
-    usage: 'Used for commerce, military record-keeping, monumental inscriptions, and dating throughout the Roman Empire and medieval Europe.'
+    usage: 'Merchants, legionaries, and stonecutters throughout the Roman world used this additive/subtractive system for ledgers and monuments, so the converter enforces the classical 1–3,999 range.',
+    sources: [
+      { title: 'Encyclopaedia Britannica – Roman numerals', url: 'https://www.britannica.com/topic/Roman-numeral' },
+      { title: 'MAA Convergence – Roman Numerals', url: 'https://maa.org/press/periodicals/convergence/roman-numerals' }
+    ]
   },
   chineseRod: {
-    overview: 'Chinese counting rods (算筹, suàn chóu) were physical sticks arranged on a counting board. Vertical and horizontal orientations alternated by place value to avoid confusion — a clever solution to prevent adjacent digits from blurring together.',
+    overview: 'Chinese counting rod numerals implement a decimal positional system by laying bamboo rods on a counting board with alternating orientations for adjacent places.',
     facts: [
-      'Rod numerals are arguably the first true decimal positional system',
-      'Negative numbers were represented using red rods (positive) and black rods (negative)',
-      'The alternating vertical/horizontal pattern prevented misreading adjacent digits',
-      'Chinese mathematicians used rod numerals to solve systems of linear equations',
-      'The Sunzi Suanjing (3rd–5th century AD) contains the earliest known Chinese remainder theorem'
+      'Ones, hundreds, and ten-thousands use vertical rods while tens and thousands lie horizontally to stop digits from blending.',
+      'A blank cell indicates zero; mathematical texts later mention using a small circle symbol to keep the board aligned when no rods occupy a place.',
+      'Red rods denoted positive quantities and black rods denoted negative, enabling signed arithmetic and linear-equation solving in works such as The Nine Chapters.'
     ],
-    usage: 'Used by Chinese scholars, merchants, and government officials for calculations on counting boards for over 1,500 years before the abacus became dominant.'
+    usage: 'Counting boards supported imperial administration, taxation, and astronomy until the abacus spread, which is why the converter alternates vertical and horizontal glyphs and shows a visible zero placeholder for clarity.',
+    sources: [
+      { title: 'Counting rod numerals (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Counting_rods' },
+      { title: 'MAA Convergence – The Nine Chapters on the Mathematical Art', url: 'https://maa.org/press/periodicals/convergence/what-did-the-ancient-chinese-do-with-negative-numbers' }
+    ]
   },
   greekAttic: {
-    overview: 'Greek Attic (or Acrophonic) numerals used the initial letters of Greek number words: Π for pente (5), Δ for deka (10), Η for hekaton (100). This mnemonic system preceded the more famous alphabetic Greek numerals.',
+    overview: 'Greek Attic (acrophonic) numerals spell numbers with the first letters of number words — Ι (1), Π (5), Δ (10), Η (100), Χ (1,000), Μ (10,000) — plus ligatures for multiples of five.',
     facts: [
-      'Called "acrophonic" because symbols are the first letters of the Greek words for each number',
-      'Compound symbols like 𐅂 (50) combine the base letter with Π for "five times"',
-      'Used widely in Athenian inscriptions, especially for financial records',
-      'Replaced by the Greek alphabetic system (α=1, β=2, γ=3...) around 100 BC',
-      'The system was purely additive — no subtractive principle like Roman numerals'
+      'Values add together without subtraction or zero, so numerals concatenate descending glyphs much like Roman numerals.',
+      'Ligatures such as ΠΔ (50), ΠΗ (500), ΠΧ (5,000), and ΜΠ (50,000) mark “five times” a base power of ten.',
+      'The system dominated Athenian decrees and financial inscriptions from roughly the 7th to 3rd centuries BCE before the Ionian alphabetic numerals replaced it.'
     ],
-    usage: 'Primarily used in Athens and surrounding regions for public inscriptions, financial accounts, and official documents from the 5th century BC onward.'
+    usage: 'Because totals were tracked in stone account boards and tribute records, the converter repeats the Attic glyphs exactly as ancient clerks would have carved them.',
+    sources: [
+      { title: 'MacTutor – Greek Numerals', url: 'https://mathshistory.st-andrews.ac.uk/HistTopics/Greek_numerals/' },
+      { title: 'EpiDoc Guidelines – Acrophonic numerals', url: 'https://epidoc.stoa.org/gl/latest/app-acrophonic.html' }
+    ]
   }
 };
 
