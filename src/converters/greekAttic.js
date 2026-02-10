@@ -32,7 +32,9 @@ export function convertToGreekAttic(num) {
       steps.push({
         value: value * count,
         symbol: symbol.repeat(count),
-        explanation: `${value.toLocaleString()} × ${count} → ${symbol.repeat(count)} (${name})`
+        explanation: count === 1
+          ? `${name} = ${value.toLocaleString()}`
+          : `${count} × ${name} = ${(value * count).toLocaleString()}`
       });
     }
   }

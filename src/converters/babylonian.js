@@ -32,7 +32,7 @@ export function convertToBabylonian(num) {
         steps.push({
           value: quotient * powerOf60,
           symbol: groupResult.join(''),
-          explanation: `Position ${i} (×${powerOf60.toLocaleString()}): ${quotient} → ${groupResult.join('')}`
+          explanation: `Position ${i} (×${powerOf60.toLocaleString()}): ${quotient} = ${(quotient * powerOf60).toLocaleString()}`
         });
       }
     }

@@ -77,6 +77,25 @@ describe('Roman converter', () => {
     expect(steps[1].value).toBe(2);
   });
 
+  test('step explanation shows just value when count is 1', () => {
+    const { steps } = convertToRoman(45);
+    // XL (40) and V (5) — both count=1
+    expect(steps[0].explanation).toBe('= 40');
+    expect(steps[1].explanation).toBe('= 5');
+  });
+
+  test('step explanation shows multiplication when count > 1', () => {
+    const { steps } = convertToRoman(3000);
+    // MMM — 1000 × 3
+    expect(steps[0].explanation).toBe('1,000 × 3 = 3,000');
+  });
+
+  test('step explanations do not repeat the symbol', () => {
+    const { steps } = convertToRoman(42);
+    expect(steps[0].explanation).not.toContain('XL');
+    expect(steps[1].explanation).not.toContain('II');
+  });
+
   test('rejects 0', () => {
     expect(convertToRoman(0).result).toEqual(['Invalid input']);
   });
@@ -158,6 +177,26 @@ describe('Egyptian converter', () => {
     expect(steps[3].explanation).toContain('stroke');
   });
 
+  test('step explanation uses "name = value" when count is 1', () => {
+    const { steps } = convertToEgyptian(1000);
+    expect(steps[0].explanation).toBe('lotus = 1,000');
+  });
+
+  test('step explanation uses "count names = total" when count > 1', () => {
+    const { steps } = convertToEgyptian(300);
+    expect(steps[0].explanation).toBe('3 coil of ropes = 300');
+  });
+
+  test('step explanations do not repeat hieroglyph symbols', () => {
+    const { steps } = convertToEgyptian(1234);
+    for (const step of steps) {
+      expect(step.explanation).not.toContain('𓆼');
+      expect(step.explanation).not.toContain('𓍢');
+      expect(step.explanation).not.toContain('𓎆');
+      expect(step.explanation).not.toContain('𓏺');
+    }
+  });
+
   test('rejects 0', () => {
     expect(convertToEgyptian(0).result).toEqual(['Invalid input']);
   });
@@ -236,6 +275,22 @@ describe('Babylonian converter', () => {
     expect(steps[0].explanation).toContain('Position');
   });
 
+  test('step explanation shows position value calculation', () => {
+    const { steps } = convertToBabylonian(3661);
+    // Position 2 (×3600): 1 = 3,600
+    expect(steps[0].explanation).toBe('Position 2 (×3,600): 1 = 3,600');
+    // Position 1 (×60): 1 = 60
+    expect(steps[1].explanation).toBe('Position 1 (×60): 1 = 60');
+    // Position 0 (×1): 1 = 1
+    expect(steps[2].explanation).toBe('Position 0 (×1): 1 = 1');
+  });
+
+  test('step explanations do not repeat cuneiform symbols', () => {
+    const { steps } = convertToBabylonian(42);
+    expect(steps[0].explanation).not.toContain('𒌋');
+    expect(steps[0].explanation).not.toContain('𒁹');
+  });
+
   test('rejects 0', () => {
     expect(convertToBabylonian(0).result).toEqual(['Invalid input']);
   });
@@ -312,6 +367,18 @@ describe('Mayan converter', () => {
     expect(steps[1].explanation).toContain('Position 0');
   });
 
+  test('step explanation shows position value calculation', () => {
+    const { steps } = convertToMayan(42);
+    // 42 = 2×20 + 2: Position 1 (×20): 2 = 40, Position 0 (×1): 2 = 2
+    expect(steps[0].explanation).toBe('Position 1 (×20): 2 = 40');
+    expect(steps[1].explanation).toBe('Position 0 (×1): 2 = 2');
+  });
+
+  test('step explanations do not repeat dot/bar symbols', () => {
+    const { steps } = convertToMayan(42);
+    expect(steps[0].explanation).not.toContain('••');
+  });
+
   test('rejects negative numbers', () => {
     expect(convertToMayan(-1).result).toEqual(['Invalid input']);
   });
@@ -365,6 +432,12 @@ describe('Chinese Rod converter', () => {
     expect(steps.length).toBe(2);
     expect(steps[0].explanation).toContain('horizontal');
     expect(steps[1].explanation).toContain('vertical');
+  });
+
+  test('step explanation shows digit and orientation without symbol', () => {
+    const { steps } = convertToChineseRod(42);
+    expect(steps[0].explanation).toBe('tens place: 4 (horizontal)');
+    expect(steps[1].explanation).toBe('ones place: 2 (vertical)');
   });
 
   test('rejects 0', () => {
@@ -436,6 +509,22 @@ describe('Greek Attic converter', () => {
   test('returns steps', () => {
     const { steps } = convertToGreekAttic(42);
     expect(steps.length).toBe(2);
+  });
+
+  test('step explanation uses "name = value" when count is 1', () => {
+    const { steps } = convertToGreekAttic(10);
+    expect(steps[0].explanation).toBe('deka (ten) = 10');
+  });
+
+  test('step explanation uses multiplication when count > 1', () => {
+    const { steps } = convertToGreekAttic(40);
+    expect(steps[0].explanation).toBe('4 × deka (ten) = 40');
+  });
+
+  test('step explanations do not repeat symbols', () => {
+    const { steps } = convertToGreekAttic(42);
+    expect(steps[0].explanation).not.toContain('Δ');
+    expect(steps[1].explanation).not.toContain('Ι');
   });
 
   test('rejects 0', () => {
