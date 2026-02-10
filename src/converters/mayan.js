@@ -21,7 +21,7 @@ export function convertToMayan(num) {
       steps.push({
         value: digit * power,
         symbol: mayanSymbols[digit],
-        explanation: `Position ${position} (×${power.toLocaleString()}): ${digit} → ${mayanSymbols[digit]}`
+        explanation: `Position ${position} (×${power.toLocaleString()}): ${digit} = ${(digit * power).toLocaleString()}`
       });
     }
     remaining = Math.floor(remaining / 20);

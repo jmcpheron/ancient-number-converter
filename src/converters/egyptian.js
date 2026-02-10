@@ -26,7 +26,9 @@ export function convertToEgyptian(num) {
       steps.push({
         value: value * count,
         symbol: egyptianSymbols[value].repeat(count),
-        explanation: `${value.toLocaleString()} × ${count} → ${egyptianSymbols[value].repeat(count)} (${count} ${egyptianNames[value]}${count > 1 ? 's' : ''})`
+        explanation: count === 1
+          ? `${egyptianNames[value]} = ${value.toLocaleString()}`
+          : `${count} ${egyptianNames[value]}s = ${(value * count).toLocaleString()}`
       });
     }
   }

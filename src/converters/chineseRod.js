@@ -36,7 +36,7 @@ export function convertToChineseRod(num) {
     steps.push({
       value: digit * placeValue,
       symbol,
-      explanation: `${placeNames[position]} place: ${digit} → ${symbol} (${orientation})`
+      explanation: `${placeNames[position]} place: ${digit} (${orientation})`
     });
   });
 
