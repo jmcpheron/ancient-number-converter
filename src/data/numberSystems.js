@@ -97,7 +97,7 @@ const numberSystems = {
     era: '~2600 BC – 1532 AD',
     region: 'Andes (Inca Empire)',
     description: 'Base-10 knotted-string recording system',
-    renderMode: 'vertical',
+    renderMode: 'cord',
   }
 };
 
