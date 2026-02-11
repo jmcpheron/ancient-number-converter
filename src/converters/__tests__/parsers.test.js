@@ -4,12 +4,14 @@ import { parseBabylonian } from '../parsers/babylonian';
 import { parseMayan } from '../parsers/mayan';
 import { parseChineseRod } from '../parsers/chineseRod';
 import { parseGreekAttic } from '../parsers/greekAttic';
+import { parseQuipu } from '../parsers/quipu';
 import { convertToRoman } from '../roman';
 import { convertToEgyptian } from '../egyptian';
 import { convertToBabylonian } from '../babylonian';
 import { convertToMayan } from '../mayan';
 import { convertToChineseRod } from '../chineseRod';
 import { convertToGreekAttic } from '../greekAttic';
+import { convertToQuipu } from '../quipu';
 
 // ─── Roman Parser ───────────────────────────────────────────────────────────
 
@@ -276,6 +278,59 @@ describe('Greek Attic parser', () => {
   });
 });
 
+// ─── Quipu Parser ─────────────────────────────────────────────────────────
+
+describe('Quipu parser', () => {
+  test('parses figure-eight knot to 1', () => {
+    expect(parseQuipu(['∞'])).toEqual({ value: 1, error: null });
+  });
+
+  test('parses two-turn long knot to 2', () => {
+    expect(parseQuipu(['◎◎'])).toEqual({ value: 2, error: null });
+  });
+
+  test('parses five-turn long knot to 5', () => {
+    expect(parseQuipu(['◎◎◎◎◎'])).toEqual({ value: 5, error: null });
+  });
+
+  test('parses multi-position for 42 (4 simple knots, 2-turn long knot)', () => {
+    // Top-to-bottom: tens first, then ones
+    const { value } = parseQuipu(['●●●●', '◎◎']);
+    expect(value).toBe(42);
+  });
+
+  test('parses 10 (1 simple knot, zero)', () => {
+    const { value } = parseQuipu(['●', '—']);
+    expect(value).toBe(10);
+  });
+
+  test('parses 101 with zero in tens', () => {
+    const { value } = parseQuipu(['●', '—', '∞']);
+    expect(value).toBe(101);
+  });
+
+  test('parses 1234', () => {
+    const { value } = parseQuipu(['●', '●●', '●●●', '◎◎◎◎']);
+    expect(value).toBe(1234);
+  });
+
+  test('rejects simple knot in ones place', () => {
+    expect(parseQuipu(['●']).error).toBeTruthy();
+  });
+
+  test('rejects figure-eight in higher places', () => {
+    expect(parseQuipu(['∞', '◎◎']).error).toBeTruthy();
+  });
+
+  test('rejects unknown symbols', () => {
+    expect(parseQuipu(['X']).error).toBeTruthy();
+  });
+
+  test('rejects empty input', () => {
+    expect(parseQuipu([]).error).toBeTruthy();
+  });
+});
+
 // ─── Round-trip Tests (convert then parse back) ─────────────────────────────
 
 describe('Round-trip: convert then parse', () => {
@@ -319,6 +374,14 @@ describe('Round-trip: convert then parse', () => {
   test.each(greekAtticValues)('Greek Attic round-trip for %i', (num) => {
     const { result } = convertToGreekAttic(num);
     const { value } = parseGreekAttic(result[0]);
+    expect(value).toBe(num);
+  });
+
+  const quipuValues = [1, 2, 5, 9, 10, 42, 100, 101, 1234, 99999];
+  test.each(quipuValues)('Quipu round-trip for %i', (num) => {
+    const { result } = convertToQuipu(num);
+    // Parser expects top-to-bottom (most significant first), converter returns bottom-to-top
+    const { value } = parseQuipu([...result].reverse());
     expect(value).toBe(num);
   });
 });
