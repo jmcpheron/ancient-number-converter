@@ -23,6 +23,8 @@ export function renderNumberInput(value, activeSystem) {
       <div class="flex gap-3">
         <input
           type="number"
+          inputmode="numeric"
+          pattern="[0-9]*"
           id="number-input"
           value="${value}"
           placeholder="Enter a number..."

@@ -166,7 +166,7 @@ export function renderQuizView() {
     if (!revealed) {
       answerArea = `
         <div class="flex gap-3">
-          <input type="number" id="quiz-guess" value="${esc(guess)}" placeholder="Your answer..."
+          <input type="number" inputmode="numeric" pattern="[0-9]*" id="quiz-guess" value="${esc(guess)}" placeholder="Your answer..."
             class="flex-1 px-4 py-3 bg-parchment-light/50 border-2 border-stone-300 rounded-lg
               font-crimson text-lg text-stone-800 placeholder-stone-400
               focus:outline-none focus:ring-2 focus:ring-stone-400" />
