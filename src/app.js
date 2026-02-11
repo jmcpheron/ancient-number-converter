@@ -10,9 +10,6 @@ import { renderHistoryPanel } from './components/HistoryPanel.js';
 import { renderReverseInput, handleReverseEvent, resetReverseState } from './components/ReverseInput.js';
 import { renderQuizView, handleQuizEvent, initQuiz, cleanupQuiz } from './components/QuizView.js';
 import { renderShowcaseView, serializeShowcase } from './components/ShowcaseView.js';
-import { renderReportModal } from './components/ReportModal.js';
-import { renderReportsPanel, saveReport, deleteReport, exportReports } from './components/ReportsPanel.js';
-import { verifyRoundTrip } from './utils/verification.js';
 import numberSystems from './data/numberSystems.js';
 
 const root = () => document.getElementById('root');
@@ -45,8 +42,6 @@ function renderSkeleton() {
           <p class="font-crimson text-xs text-stone-400">
             <a href="https://github.com/jmcpheron/ancient-number-converter" target="_blank" rel="noopener noreferrer"
               class="underline hover:text-stone-600 transition-colors">View on GitHub</a>
-            <span class="mx-2">·</span>
-            <a href="#" data-action="show-reports" class="underline hover:text-stone-600 transition-colors">Submitted Reports</a>
             <span class="mx-2">·</span>
             Last updated ${__BUILD_DATE__}
           </p>
@@ -160,33 +155,6 @@ function togglePanel(name) {
   if (label) label.textContent = isOpen ? 'Show' : 'Hide';
 }
 
-// --- Modal management ---
-function openReportModal(context) {
-  // Remove any existing modal
-  closeReportModal();
-  const container = document.createElement('div');
-  container.id = 'modal-container';
-  container.innerHTML = renderReportModal(context);
-  root().appendChild(container);
-}
-
-function closeReportModal() {
-  const existing = document.getElementById('modal-container');
-  if (existing) existing.remove();
-}
-
-function openReportsPanel() {
-  const mainArea = document.getElementById('main-area');
-  if (!mainArea) return;
-  mainArea.innerHTML = `
-    <div class="space-y-6">
-      <div class="flex items-center gap-3">
-        <button data-action="reports-back" class="px-4 py-2 bg-stone-200 text-stone-700 font-cinzel text-sm rounded-lg hover:bg-stone-300 transition-colors">&larr; Back</button>
-      </div>
-      ${renderReportsPanel()}
-    </div>`;
-}
-
 // --- Event delegation ---
 function handleClick(e) {
   const target = e.target;
@@ -256,98 +224,6 @@ function handleClick(e) {
         const original = btn.innerHTML;
         btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
         setTimeout(() => { btn.innerHTML = original; }, 2000);
-      }
-    });
-    return;
-  }
-
-  // --- Verify conversion ---
-  if (target.closest('[data-action="verify-conversion"]')) {
-    const btn = target.closest('[data-action="verify-conversion"]');
-    const systemId = btn.dataset.system;
-    const number = parseInt(btn.dataset.number, 10);
-    const v = verifyRoundTrip(systemId, number);
-    const el = document.getElementById('verify-result');
-    if (el) {
-      if (v.passed) {
-        el.innerHTML = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 border border-green-200">
-          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-          Verified: ${number} → ${v.parsed}</span>`;
-      } else {
-        el.innerHTML = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-700 border border-red-200">
-          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-          ${v.error}</span>`;
-      }
-    }
-    return;
-  }
-
-  // --- Report modal ---
-  if (target.closest('[data-action="report-open"]')) {
-    const btn = target.closest('[data-action="report-open"]');
-    openReportModal({
-      systemName: btn.dataset.systemName,
-      number: btn.dataset.number,
-      result: btn.dataset.result,
-    });
-    return;
-  }
-  if (target.closest('[data-action="report-close"]')) {
-    closeReportModal();
-    return;
-  }
-  if (target.closest('[data-action="report-submit"]')) {
-    const typeEl = document.getElementById('report-type');
-    const detailsEl = document.getElementById('report-details');
-    const overlay = document.getElementById('report-overlay');
-    if (typeEl && overlay) {
-      // Extract context from the modal's display
-      const modalText = overlay.querySelectorAll('strong');
-      const systemName = modalText[0]?.textContent || '';
-      const number = modalText[1]?.textContent || '';
-      const result = modalText[2]?.textContent || '';
-      saveReport({
-        systemName,
-        number,
-        result,
-        type: typeEl.value,
-        details: detailsEl?.value || '',
-      });
-      closeReportModal();
-      // Brief confirmation
-      const verifyEl = document.getElementById('verify-result');
-      if (verifyEl) {
-        verifyEl.innerHTML = '<span class="text-green-600">Report submitted</span>';
-        setTimeout(() => { verifyEl.innerHTML = ''; }, 3000);
-      }
-    }
-    return;
-  }
-
-  // --- Reports panel ---
-  if (target.closest('[data-action="show-reports"]')) {
-    e.preventDefault();
-    openReportsPanel();
-    return;
-  }
-  if (target.closest('[data-action="reports-back"]')) {
-    renderMainArea();
-    return;
-  }
-  if (target.closest('[data-action="report-delete"]')) {
-    const btn = target.closest('[data-action="report-delete"]');
-    deleteReport(parseInt(btn.dataset.reportId, 10));
-    openReportsPanel();
-    return;
-  }
-  if (target.closest('[data-action="reports-export"]')) {
-    const text = exportReports();
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = target.closest('[data-action="reports-export"]');
-      if (btn) {
-        const orig = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = orig; }, 2000);
       }
     });
     return;
