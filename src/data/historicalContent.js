@@ -8,7 +8,7 @@ const historicalContent = {
     ],
     usage: 'Base-20 arithmetic powered the Tzolk’in, Haab, and Long Count calendars and let astronomer-priests track solar and Venus cycles.',
     sources: [
-      { title: 'Mayan Numbers Library – Numeration', url: 'https://mayanlibrary.org/mayan-numbers-library/' },
+      { title: 'Maya numerals (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Maya_numerals' },
       { title: 'MAA Convergence – The Mayan Number System', url: 'https://old.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system' }
     ]
   },
@@ -22,7 +22,7 @@ const historicalContent = {
     usage: 'Tax rolls, architectural tallies, and funerary inscriptions all used these additive numerals, so the converter mirrors that behavior by repeating symbols for every unit of a power of ten.',
     sources: [
       { title: 'Encyclopaedia Britannica – Egyptian numerals', url: 'https://www.britannica.com/science/numeral/Egyptian-numerals' },
-      { title: 'MAA Convergence – Photo Album of the Rhind Mathematical Papyrus', url: 'https://maa.org/press/periodicals/convergence/photo-album-of-the-rhind-mathematical-papyrus' }
+      { title: 'MAA Convergence – The Rhind and Moscow Mathematical Papyri', url: 'https://old.maa.org/press/periodicals/convergence/mathematical-treasure-the-rhind-and-moscow-mathematical-papyri' }
     ]
   },
   babylonian: {
@@ -48,7 +48,7 @@ const historicalContent = {
     usage: 'Merchants, legionaries, and stonecutters throughout the Roman world used this additive/subtractive system for ledgers and monuments, so the converter enforces the classical 1–3,999 range.',
     sources: [
       { title: 'Encyclopaedia Britannica – Roman numerals', url: 'https://www.britannica.com/topic/Roman-numeral' },
-      { title: 'MAA Convergence – Roman Numerals', url: 'https://maa.org/press/periodicals/convergence/roman-numerals' }
+      { title: 'Story of Mathematics – Roman Numerals', url: 'https://www.storyofmathematics.com/roman.html/' }
     ]
   },
   chineseRod: {
@@ -61,7 +61,7 @@ const historicalContent = {
     usage: 'Counting boards supported imperial administration, taxation, and astronomy until the abacus spread, which is why the converter alternates vertical and horizontal glyphs and shows a visible zero placeholder for clarity.',
     sources: [
       { title: 'Counting rod numerals (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Counting_rods' },
-      { title: 'MAA Convergence – The Nine Chapters on the Mathematical Art', url: 'https://maa.org/press/periodicals/convergence/what-did-the-ancient-chinese-do-with-negative-numbers' }
+      { title: 'MAA Convergence – The Nine Chapters: Numbers and Units', url: 'https://old.maa.org/press/periodicals/convergence/a-classic-from-china-the-nine-chapters-numbers-and-units' }
     ]
   },
   greekAttic: {
@@ -73,8 +73,8 @@ const historicalContent = {
     ],
     usage: 'Because totals were tracked in stone account boards and tribute records, the converter repeats the Attic glyphs exactly as ancient clerks would have carved them.',
     sources: [
-      { title: 'MacTutor – Greek Numerals', url: 'https://mathshistory.st-andrews.ac.uk/HistTopics/Greek_numerals/' },
-      { title: 'EpiDoc Guidelines – Acrophonic numerals', url: 'https://epidoc.stoa.org/gl/latest/app-acrophonic.html' }
+      { title: 'MacTutor – Greek Numbers', url: 'https://mathshistory.st-andrews.ac.uk/HistTopics/Greek_numbers/' },
+      { title: 'EpiDoc Guidelines – Acrophonic Numbers', url: 'https://epidoc.stoa.org/gl/latest/trans-numacrophonic.html' }
     ]
   },
   quipu: {
@@ -87,7 +87,7 @@ const historicalContent = {
     usage: 'Inca administrators (quipucamayocs) used quipu for census tallies, tribute records, and storehouse inventories across the empire\'s road network — the converter maps each decimal digit to its corresponding knot type and position.',
     sources: [
       { title: 'Quipu (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Quipu' },
-      { title: 'Khipu Field Guide – Harvard', url: 'https://khipufieldguide.fas.harvard.edu/' }
+      { title: 'Quipu – World History Encyclopedia', url: 'https://www.worldhistory.org/Quipu/' }
     ]
   }
 };
