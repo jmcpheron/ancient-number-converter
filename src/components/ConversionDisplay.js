@@ -76,10 +76,16 @@ export function renderConversionDisplay(systemId, number) {
   const { result } = system.convert(num);
 
   if (result[0] === 'Invalid input') {
-    return `<div class="p-6 rounded-xl border-2 ${ac} text-center">
-      <p class="font-crimson text-red-600">
-        Number out of range for ${esc(system.name)} (${system.range[0].toLocaleString()} – ${system.range[1].toLocaleString()})
+    const clamped = num < system.range[0] ? system.range[0] : system.range[1];
+    return `<div class="p-6 rounded-xl border-2 ${ac} text-center space-y-3">
+      <p class="font-crimson text-stone-600">
+        ${num.toLocaleString()} is outside ${esc(system.name)}'s range of ${system.range[0].toLocaleString()} – ${system.range[1].toLocaleString()}
       </p>
+      <button data-action="clamp-to-range" data-clamp-value="${clamped}"
+        class="px-5 py-2 bg-stone-700 text-parchment-light font-cinzel text-sm
+          rounded-lg hover:bg-stone-600 transition-colors shadow-md">
+        Show ${clamped.toLocaleString()} instead
+      </button>
     </div>`;
   }
 

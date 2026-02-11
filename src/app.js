@@ -182,6 +182,16 @@ function handleClick(e) {
     return;
   }
 
+  // "Show N instead" button on out-of-range display
+  const clampBtn = target.closest('[data-action="clamp-to-range"]');
+  if (clampBtn) {
+    setState({ number: clampBtn.dataset.clampValue });
+    // Re-render number input to clear the out-of-range error banner
+    const numEl = document.getElementById('number-input-container');
+    if (numEl) numEl.innerHTML = renderNumberInput(getState().number, getState().activeTab);
+    return;
+  }
+
   // Compare toggle
   if (target.closest('[data-action="toggle-compare"]')) {
     setState({ showCompare: !s.showCompare, reverseMode: false });
