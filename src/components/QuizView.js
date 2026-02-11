@@ -105,9 +105,49 @@ function handleReveal() {
   timerId = null;
 }
 
+function renderQuizCord(result) {
+  const displayed = [...result].reverse();
+
+  const rows = displayed.map(sym => {
+    const isZero = sym === '\u2014';
+    if (isZero) {
+      return `
+        <div class="relative flex items-center justify-center h-8">
+          <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1.5 bg-stone-400/50 rounded-sm"></div>
+          <div class="relative z-10 w-3 h-px bg-stone-400/50"></div>
+        </div>`;
+    }
+    const knots = [...sym];
+    return `
+      <div class="relative flex items-center justify-center py-1">
+        <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1.5 bg-stone-400/50 rounded-sm"></div>
+        <div class="relative z-10 flex items-center text-xl text-stone-800">
+          ${knots.map(k => `<span>${esc(k)}</span>`).join('')}
+        </div>
+      </div>`;
+  });
+
+  const gap = '<div class="w-1.5 h-3 bg-stone-400/50 rounded-sm"></div>';
+
+  return `
+    <div class="flex justify-center">
+      <div class="inline-flex flex-col items-center">
+        <div class="w-6 h-1.5 rounded-sm bg-stone-400/50"></div>
+        <div class="w-1.5 h-2 bg-stone-400/50 rounded-sm"></div>
+        ${rows.join(gap)}
+        <div class="w-1.5 h-4 bg-stone-400/50 rounded-sm"></div>
+        <div class="w-0.5 h-3 bg-stone-400/50 rounded-b-full opacity-60"></div>
+      </div>
+    </div>`;
+}
+
 function renderQuestionDisplay(question) {
   if (!question) return '';
   const { system, result } = question;
+
+  if (system.renderMode === 'cord') {
+    return renderQuizCord(result);
+  }
 
   if (system.renderMode === 'vertical') {
     const items = [...result].reverse().map(sym =>

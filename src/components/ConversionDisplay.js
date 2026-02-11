@@ -24,8 +24,62 @@ function esc(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+function renderCord(result, cordBg, knotText) {
+  const placeLabels = ['ones', 'tens', 'hundreds', 'thousands', 'ten-thousands'];
+  // result[0]=ones, result[last]=most significant — reverse to show top-down
+  const displayed = [...result].reverse();
+  const total = displayed.length;
+
+  const rows = displayed.map((sym, i) => {
+    const posIdx = total - 1 - i;
+    const label = placeLabels[posIdx] || '';
+    const isZero = sym === '\u2014'; // em dash (quipu zero)
+
+    if (isZero) {
+      // Empty cord for zero — slightly longer, with a subtle tick mark
+      return `
+        <div class="flex items-center gap-2">
+          <div class="relative flex items-center justify-center h-8">
+            <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1.5 ${cordBg} rounded-sm"></div>
+            <div class="relative z-10 w-3 h-px ${cordBg}"></div>
+          </div>
+          <span class="font-crimson text-xs text-stone-400">${label}</span>
+        </div>`;
+    }
+
+    const knots = [...sym];
+    return `
+      <div class="flex items-center gap-2">
+        <div class="relative flex items-center justify-center py-1">
+          <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1.5 ${cordBg} rounded-sm"></div>
+          <div class="relative z-10 flex items-center ${knotText}">
+            ${knots.map(k => `<span>${esc(k)}</span>`).join('')}
+          </div>
+        </div>
+        <span class="font-crimson text-xs text-stone-400">${label}</span>
+      </div>`;
+  });
+
+  const gap = `<div class="w-1.5 h-3 ${cordBg} rounded-sm"></div>`;
+
+  return `
+    <div class="flex justify-center">
+      <div class="inline-flex flex-col items-center">
+        <div class="w-6 h-1.5 rounded-sm ${cordBg}"></div>
+        <div class="w-1.5 h-2 ${cordBg} rounded-sm"></div>
+        ${rows.join(gap)}
+        <div class="w-1.5 h-4 ${cordBg} rounded-sm"></div>
+        <div class="w-0.5 h-3 ${cordBg} rounded-b-full opacity-60"></div>
+      </div>
+    </div>`;
+}
+
 function renderResult(system, result) {
   const sc = symbolClasses[system.color];
+
+  if (system.renderMode === 'cord') {
+    return renderCord(result, 'bg-inca/50', 'text-xl text-stone-800');
+  }
 
   if (system.renderMode === 'vertical') {
     const items = [...result].reverse().map(sym =>
