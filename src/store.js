@@ -4,6 +4,7 @@ let state = {
   showCompare: false,
   reverseMode: false,
   showQuiz: false,
+  showShowcase: false,
 };
 
 const listeners = [];
