@@ -2,6 +2,7 @@ import numberSystems from '../data/numberSystems.js';
 import showcaseExamples from '../data/showcaseExamples.js';
 import historicalContent from '../data/historicalContent.js';
 import { verifyRoundTrip } from '../utils/verification.js';
+import { renderSvgCord } from './quipuSvg.js';
 
 const accentClasses = {
   jungle: 'border-jungle/30 bg-gradient-to-b from-green-50/50 to-green-100/30',
@@ -28,25 +29,7 @@ function esc(str) {
 }
 
 function renderCordCompact(result) {
-  const placeLabels = ['ones', 'tens', 'hundreds', 'thousands', 'ten-thousands'];
-  const displayed = [...result].reverse();
-  const cord = '<div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1 bg-inca/50"></div>';
-  const rows = [];
-  rows.push(`<div class="relative w-32 h-3 flex justify-center items-center">${cord}<div class="relative z-10 w-8 h-1.5 rounded-sm bg-inca/60"></div></div>`);
-  for (let i = 0; i < displayed.length; i++) {
-    rows.push(`<div class="relative w-32 h-2">${cord}</div>`);
-    const sym = displayed[i];
-    const posIdx = displayed.length - 1 - i;
-    const label = placeLabels[posIdx] || '';
-    const isZero = sym === '\u2014';
-    if (isZero) {
-      rows.push(`<div class="flex items-center"><div class="relative w-32 h-4 flex justify-center items-center">${cord}<div class="relative z-10 w-4 border-t border-dashed border-inca/30"></div></div><span class="pl-2 font-crimson text-xs text-stone-400">${label}</span></div>`);
-    } else {
-      rows.push(`<div class="flex items-center"><div class="relative w-32 flex justify-center items-center py-1">${cord}<div class="relative z-10 flex items-center text-sm text-stone-800">${[...sym].map(k => `<span>${k}</span>`).join('')}</div></div><span class="pl-2 font-crimson text-xs text-stone-400">${label}</span></div>`);
-    }
-  }
-  rows.push(`<div class="relative w-32 h-3">${cord}</div>`);
-  return `<div class="flex justify-center"><div class="flex flex-col">${rows.join('')}</div></div>`;
+  return renderSvgCord(result, { compact: true });
 }
 
 function renderResult(system, result) {

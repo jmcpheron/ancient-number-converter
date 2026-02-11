@@ -80,9 +80,9 @@ const historicalContent = {
   quipu: {
     overview: 'Quipu (khipu) are knotted-string devices used across the Andes for centuries before and throughout the Inca Empire to record numerical and possibly narrative information using a base-10 positional system.',
     facts: [
-      'Each pendant cord encodes a decimal number with knot clusters spaced along its length — the ones place sits nearest the free end, with tens, hundreds, and thousands ascending toward the primary cord.',
-      'Three knot types distinguish place values: clusters of simple overhead knots mark tens and above, multi-turn long knots mark digits 2–9 in the ones place, and a single figure-eight knot marks 1 in the ones place.',
-      'Zero is represented by the absence of knots at a given position, so the spacing between knot clusters is essential for reading the correct value.'
+      'Turns within a long knot indicate digits 2–9 in the ones place; a figure-eight knot marks a fixed value of 1; simple overhead (granny) knots in clusters mark tens, hundreds, and thousands; and a missing knot at any position equals zero.',
+      'Secondary pendant strings could hang from any cord to flag exceptions or subordinate data — for instance, a sub-pendant might note damaged goods within a storehouse tally.',
+      'Individual quipu could be joined together into meaningful sequences: a master cord might bind dozens of pendant cords, each representing a different village or commodity in a provincial census.'
     ],
     usage: 'Inca administrators (quipucamayocs) used quipu for census tallies, tribute records, and storehouse inventories across the empire\'s road network — the converter maps each decimal digit to its corresponding knot type and position.',
     sources: [

@@ -1,4 +1,5 @@
 import numberSystems from '../data/numberSystems.js';
+import { renderSvgCord } from './quipuSvg.js';
 
 const accentClasses = {
   jungle: 'border-jungle/30 bg-gradient-to-b from-green-50/50 to-green-100/30',
@@ -25,61 +26,7 @@ function esc(str) {
 }
 
 function renderCord(result) {
-  const placeLabels = ['ones', 'tens', 'hundreds', 'thousands', 'ten-thousands'];
-  const displayed = [...result].reverse();
-  const total = displayed.length;
-  const cord = '<div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1.5 bg-inca/50"></div>';
-
-  const rows = [];
-
-  // Top: horizontal primary cord attachment
-  rows.push(
-    `<div class="relative w-44 h-5 flex justify-center items-center">
-      ${cord}
-      <div class="relative z-10 w-10 h-2 rounded-sm bg-inca/60"></div>
-    </div>`);
-
-  for (let i = 0; i < displayed.length; i++) {
-    // Cord gap between positions
-    rows.push(`<div class="relative w-44 h-4">${cord}</div>`);
-
-    const sym = displayed[i];
-    const posIdx = total - 1 - i;
-    const label = placeLabels[posIdx] || '';
-    const isZero = sym === '\u2014';
-
-    if (isZero) {
-      rows.push(
-        `<div class="flex items-center">
-          <div class="relative w-44 h-6 flex justify-center items-center">
-            ${cord}
-            <div class="relative z-10 w-5 border-t border-dashed border-inca/30"></div>
-          </div>
-          <span class="pl-3 font-crimson text-xs text-stone-400">${label}</span>
-        </div>`);
-    } else {
-      const knots = [...sym];
-      rows.push(
-        `<div class="flex items-center">
-          <div class="relative w-44 flex justify-center items-center py-1.5">
-            ${cord}
-            <div class="relative z-10 flex items-center text-lg text-stone-800 drop-shadow-sm">
-              ${knots.map(k => `<span>${esc(k)}</span>`).join('')}
-            </div>
-          </div>
-          <span class="pl-3 font-crimson text-xs text-stone-400">${label}</span>
-        </div>`);
-    }
-  }
-
-  // Bottom: cord tapers off
-  rows.push(`<div class="relative w-44 h-5">${cord}</div>`);
-  rows.push(
-    `<div class="relative w-44 h-3">
-      <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1 bg-inca/30 rounded-b-full"></div>
-    </div>`);
-
-  return `<div class="flex justify-center"><div class="flex flex-col">${rows.join('')}</div></div>`;
+  return renderSvgCord(result);
 }
 
 function renderResult(system, result) {

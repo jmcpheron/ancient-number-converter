@@ -4,7 +4,7 @@
 [![Tests](https://img.shields.io/badge/tests-185%20passed-brightgreen)](https://github.com/jmcpheron/ancient-number-converter/actions)
 [![Vitest](https://img.shields.io/badge/tested%20with-vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev)
 
-Convert modern numbers into six ancient numeral systems and back again. Explore how different civilizations represented quantities, with step-by-step breakdowns showing the math behind each conversion.
+Convert modern numbers into seven ancient numeral systems and back again. Explore how different civilizations represented quantities, with step-by-step breakdowns showing the math behind each conversion.
 
 **[Live Demo](https://jmcpheron.github.io/ancient-number-converter)**
 
@@ -16,6 +16,7 @@ Convert modern numbers into six ancient numeral systems and back again. Explore 
 ![Roman](https://img.shields.io/badge/XLII-Roman_Numerals-8B0000?style=for-the-badge)
 ![Chinese Rod](https://img.shields.io/badge/%F0%9D%8D%A0%F0%9D%8D%AC-Chinese_Rod-C41E3A?style=for-the-badge)
 ![Greek Attic](https://img.shields.io/badge/%CE%94%CE%94%CE%A0%CE%99%CE%99-Greek_Attic-1E6091?style=for-the-badge)
+![Quipu](https://img.shields.io/badge/%E2%97%8F%E2%97%8E%E2%88%9E-Quipu_(Inca)-C4620A?style=for-the-badge)
 
 | System | Range | Example |
 |--------|-------|---------|
@@ -25,12 +26,13 @@ Convert modern numbers into six ancient numeral systems and back again. Explore 
 | Roman Numerals | 1 – 3,999 | XLII |
 | Chinese Rod Numerals | 1 – 99,999 | 𝍬𝍡 |
 | Greek Attic | 1 – 99,999 | ΔΔΔΔΠΙΙ |
+| Quipu (Inca) | 1 – 99,999 | knotted cords |
 
 ## Features
 
-- **Converter** — Enter a decimal number, see it in any of the six systems
+- **Converter** — Enter a decimal number, see it in any of the seven systems
 - **Reverse Conversion** — Type ancient numerals and get the decimal value
-- **Comparison View** — See a number in all six systems side-by-side
+- **Comparison View** — See a number in all seven systems side-by-side
 - **Step Breakdown** — Expandable explanation of each conversion step
 - **Quiz Mode** — Timed or untimed quizzes across all systems
 - **History Panel** — Track your recent conversions per system
