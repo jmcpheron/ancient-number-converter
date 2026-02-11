@@ -24,61 +24,69 @@ function esc(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function renderCord(result, cordBg, knotText) {
+function renderCord(result) {
   const placeLabels = ['ones', 'tens', 'hundreds', 'thousands', 'ten-thousands'];
-  // result[0]=ones, result[last]=most significant — reverse to show top-down
   const displayed = [...result].reverse();
   const total = displayed.length;
+  const cord = '<div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1.5 bg-inca/50"></div>';
 
-  const rows = displayed.map((sym, i) => {
+  const rows = [];
+
+  // Top: horizontal primary cord attachment
+  rows.push(
+    `<div class="relative w-44 h-5 flex justify-center items-center">
+      ${cord}
+      <div class="relative z-10 w-10 h-2 rounded-sm bg-inca/60"></div>
+    </div>`);
+
+  for (let i = 0; i < displayed.length; i++) {
+    // Cord gap between positions
+    rows.push(`<div class="relative w-44 h-4">${cord}</div>`);
+
+    const sym = displayed[i];
     const posIdx = total - 1 - i;
     const label = placeLabels[posIdx] || '';
-    const isZero = sym === '\u2014'; // em dash (quipu zero)
+    const isZero = sym === '\u2014';
 
     if (isZero) {
-      // Empty cord for zero — slightly longer, with a subtle tick mark
-      return `
-        <div class="flex items-center gap-2">
-          <div class="relative flex items-center justify-center h-8">
-            <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1.5 ${cordBg} rounded-sm"></div>
-            <div class="relative z-10 w-3 h-px ${cordBg}"></div>
+      rows.push(
+        `<div class="flex items-center">
+          <div class="relative w-44 h-6 flex justify-center items-center">
+            ${cord}
+            <div class="relative z-10 w-5 border-t border-dashed border-inca/30"></div>
           </div>
-          <span class="font-crimson text-xs text-stone-400">${label}</span>
-        </div>`;
+          <span class="pl-3 font-crimson text-xs text-stone-400">${label}</span>
+        </div>`);
+    } else {
+      const knots = [...sym];
+      rows.push(
+        `<div class="flex items-center">
+          <div class="relative w-44 flex justify-center items-center py-1.5">
+            ${cord}
+            <div class="relative z-10 flex items-center text-lg text-stone-800 drop-shadow-sm">
+              ${knots.map(k => `<span>${esc(k)}</span>`).join('')}
+            </div>
+          </div>
+          <span class="pl-3 font-crimson text-xs text-stone-400">${label}</span>
+        </div>`);
     }
+  }
 
-    const knots = [...sym];
-    return `
-      <div class="flex items-center gap-2">
-        <div class="relative flex items-center justify-center py-1">
-          <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1.5 ${cordBg} rounded-sm"></div>
-          <div class="relative z-10 flex items-center ${knotText}">
-            ${knots.map(k => `<span>${esc(k)}</span>`).join('')}
-          </div>
-        </div>
-        <span class="font-crimson text-xs text-stone-400">${label}</span>
-      </div>`;
-  });
+  // Bottom: cord tapers off
+  rows.push(`<div class="relative w-44 h-5">${cord}</div>`);
+  rows.push(
+    `<div class="relative w-44 h-3">
+      <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1 bg-inca/30 rounded-b-full"></div>
+    </div>`);
 
-  const gap = `<div class="w-1.5 h-3 ${cordBg} rounded-sm"></div>`;
-
-  return `
-    <div class="flex justify-center">
-      <div class="inline-flex flex-col items-center">
-        <div class="w-6 h-1.5 rounded-sm ${cordBg}"></div>
-        <div class="w-1.5 h-2 ${cordBg} rounded-sm"></div>
-        ${rows.join(gap)}
-        <div class="w-1.5 h-4 ${cordBg} rounded-sm"></div>
-        <div class="w-0.5 h-3 ${cordBg} rounded-b-full opacity-60"></div>
-      </div>
-    </div>`;
+  return `<div class="flex justify-center"><div class="flex flex-col">${rows.join('')}</div></div>`;
 }
 
 function renderResult(system, result) {
   const sc = symbolClasses[system.color];
 
   if (system.renderMode === 'cord') {
-    return renderCord(result, 'bg-inca/50', 'text-xl text-stone-800');
+    return renderCord(result);
   }
 
   if (system.renderMode === 'vertical') {
