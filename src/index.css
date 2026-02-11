@@ -39,3 +39,50 @@ input[type="number"] {
 .animate-stepReveal {
   opacity: 0;
 }
+
+/* Modal entrance animation */
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-modalIn {
+  animation: modalIn 0.2s ease-out;
+}
+
+/* Print styles */
+@media print {
+  /* Hide navigation, footer, buttons */
+  button, footer, [data-action], input, select, textarea,
+  #number-input-container, .flex.justify-center.gap-3.mb-6 {
+    display: none !important;
+  }
+
+  /* Show showcase cards and tabs header */
+  #showcase-view, .showcase-card, #tabs-container {
+    display: block !important;
+  }
+  #tabs-container button { display: none !important; }
+  #tabs-container { margin-bottom: 1rem; }
+
+  /* Avoid page breaks inside cards */
+  .print-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Clean backgrounds for printing */
+  body, .bg-gradient-to-b, .bg-parchment, .bg-parchment-dark {
+    background: white !important;
+    background-image: none !important;
+  }
+  .showcase-card {
+    border: 1px solid #ccc !important;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  /* Show verify badges in print */
+  .showcase-card span[class*="rounded-full"] {
+    display: inline-flex !important;
+  }
+}
