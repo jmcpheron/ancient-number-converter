@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
   base: '/ancient-number-converter/',
@@ -9,6 +10,12 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        volume: resolve(__dirname, 'volume.html'),
+      },
+    },
   },
   test: {
     globals: true,

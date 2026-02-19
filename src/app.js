@@ -1,5 +1,5 @@
 import { getState, setState, subscribe } from './store.js';
-import { renderHeader } from './components/Header.js';
+import { renderHeader, renderSticker } from './components/Header.js';
 import { renderNumberInput } from './components/NumberInput.js';
 import { renderSystemTabs } from './components/SystemTabs.js';
 import { renderConversionDisplay } from './components/ConversionDisplay.js';
@@ -23,6 +23,7 @@ function renderSkeleton() {
   const isConverter = !s.showQuiz && !s.showShowcase;
 
   return `
+    ${renderSticker()}
     <div class="min-h-screen bg-gradient-to-b from-parchment to-parchment-dark">
       <div class="max-w-6xl mx-auto px-4 pb-12">
         ${renderHeader()}

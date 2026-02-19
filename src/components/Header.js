@@ -9,3 +9,18 @@ export function renderHeader() {
       </p>
     </header>`;
 }
+
+export function renderSticker() {
+  return `
+    <a href="volume.html"
+       class="fixed top-4 right-4 z-40 print:hidden animate-stickerBounce">
+      <div class="bg-jungle text-parchment-light font-cinzel
+                  px-4 py-3 rounded-full shadow-lg hover:shadow-xl
+                  hover:scale-105 transition-all duration-200
+                  border-2 border-amber/50"
+           style="transform: rotate(-12deg);">
+        <div class="text-[10px] uppercase tracking-widest text-amber font-bold">New!</div>
+        <div class="text-sm leading-tight mt-0.5">Mayan<br>Volume</div>
+      </div>
+    </a>`;
+}

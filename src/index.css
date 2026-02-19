@@ -40,6 +40,41 @@ input[type="number"] {
   opacity: 0;
 }
 
+/* Volume control page utilities */
+.vol-shake {
+  animation: shake 0.5s ease-in-out;
+}
+.vol-drop-active {
+  border-color: #2D6A4F !important;
+  box-shadow: 0 0 12px rgba(45, 106, 79, 0.3);
+}
+.vol-drop-reject {
+  border-color: #f87171 !important;
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.3);
+}
+.vol-dragging {
+  opacity: 0.5;
+}
+.vol-piece-selected {
+  background-color: rgba(45, 106, 79, 0.15);
+  box-shadow: 0 0 0 2px #2D6A4F, 0 0 16px rgba(45, 106, 79, 0.4);
+  border-radius: 0.5rem;
+  transform: scale(1.08);
+}
+.vol-zone-empty {
+  animation: zonePulse 2s ease-in-out infinite;
+}
+.vol-zone-target {
+  animation: zoneTargetPulse 1.2s ease-in-out infinite;
+  border-color: rgba(45, 106, 79, 0.5) !important;
+}
+.vol-confetti {
+  position: absolute;
+  bottom: 50%;
+  pointer-events: none;
+  animation: confetti 1s ease-out forwards;
+}
+
 /* Print styles */
 @media print {
   /* Hide navigation, footer, buttons */
