@@ -4,13 +4,13 @@ export function renderVolumeHeader(tagline) {
   return `
     <header class="text-center pt-8 pb-4">
       <a href="index.html"
-         class="inline-block text-neutral-500 text-sm hover:text-neutral-300 transition-colors mb-4">
+         class="inline-block text-stone-500 text-sm hover:text-stone-700 transition-colors mb-4">
         &larr; Ancient Number Converter
       </a>
-      <h1 class="font-sans text-3xl md:text-4xl font-semibold text-neutral-100 tracking-tight">
+      <h1 class="font-cinzel text-3xl md:text-4xl font-bold text-stone-800 tracking-wide">
         Mayan Volume Control
       </h1>
-      <p id="vol-tagline" class="text-sm text-neutral-500 mt-1 font-light tracking-wide transition-all duration-300">
+      <p id="vol-tagline" class="text-sm text-stone-500 mt-1 font-crimson italic tracking-wide transition-all duration-300">
         ${tagline}
       </p>
     </header>`;
@@ -20,33 +20,33 @@ export function renderPalette() {
   return `
     <div id="vol-palette" class="flex flex-col items-center my-6">
       <div class="flex justify-center gap-4">
-        <div class="bg-neutral-900 border border-neutral-800 rounded-xl px-3 sm:px-5 py-3 flex items-center gap-3 sm:gap-6 shadow-lg">
+        <div class="bg-stone-200 border border-stone-300 rounded-xl px-3 sm:px-5 py-3 flex items-center gap-3 sm:gap-6 shadow-lg">
           <div draggable="true" data-piece="dot"
                class="flex items-center gap-2 cursor-pointer select-none
                       min-w-[44px] min-h-[44px] justify-center
-                      px-3 py-1.5 rounded-lg hover:bg-neutral-800 transition-all group">
-            <span class="text-2xl text-emerald-400 group-hover:scale-110 transition-transform">&bull;</span>
-            <span class="text-xs text-neutral-400 font-medium hidden sm:inline">Dot &middot; 1</span>
+                      px-3 py-1.5 rounded-lg hover:bg-stone-300 transition-all group">
+            <span class="text-2xl text-jungle group-hover:scale-110 transition-transform">&bull;</span>
+            <span class="text-xs text-stone-600 font-medium hidden sm:inline">Dot &middot; 1</span>
           </div>
-          <div class="w-px h-8 bg-neutral-700"></div>
+          <div class="w-px h-8 bg-stone-400"></div>
           <div draggable="true" data-piece="bar"
                class="flex items-center gap-2 cursor-pointer select-none
                       min-w-[44px] min-h-[44px] justify-center
-                      px-3 py-1.5 rounded-lg hover:bg-neutral-800 transition-all group">
+                      px-3 py-1.5 rounded-lg hover:bg-stone-300 transition-all group">
             <span class="text-2xl text-amber-400 group-hover:scale-110 transition-transform">&minus;</span>
-            <span class="text-xs text-neutral-400 font-medium hidden sm:inline">Bar &middot; 5</span>
+            <span class="text-xs text-stone-600 font-medium hidden sm:inline">Bar &middot; 5</span>
           </div>
-          <div class="w-px h-8 bg-neutral-700"></div>
+          <div class="w-px h-8 bg-stone-400"></div>
           <div draggable="true" data-piece="shell"
                class="flex items-center gap-2 cursor-pointer select-none
                       min-w-[44px] min-h-[44px] justify-center
-                      px-3 py-1.5 rounded-lg hover:bg-neutral-800 transition-all group">
-            <span class="text-2xl text-neutral-400 group-hover:scale-110 transition-transform">&#x1D330;</span>
-            <span class="text-xs text-neutral-400 font-medium hidden sm:inline">Shell &middot; 0</span>
+                      px-3 py-1.5 rounded-lg hover:bg-stone-300 transition-all group">
+            <span class="text-2xl text-stone-500 group-hover:scale-110 transition-transform">&#x1D330;</span>
+            <span class="text-xs text-stone-600 font-medium hidden sm:inline">Shell &middot; 0</span>
           </div>
         </div>
       </div>
-      <div class="text-center mt-2 text-neutral-600 text-xs">
+      <div class="text-center mt-2 text-stone-500 text-xs">
         Tap a piece, then tap a zone
       </div>
     </div>`;
@@ -61,8 +61,8 @@ function renderPieces(value) {
   const { bars, dots, isZero } = decompose(value);
   if (isZero) {
     return `<div class="flex flex-col items-center justify-center h-full py-3 gap-1">
-      <span class="text-3xl text-neutral-700">&#x1D330;</span>
-      <span class="text-[10px] text-neutral-600 uppercase tracking-wider">Tap or drop pieces here</span>
+      <span class="text-3xl text-stone-400">&#x1D330;</span>
+      <span class="text-[10px] text-stone-500 uppercase tracking-wider">Tap or drop pieces here</span>
     </div>`;
   }
 
@@ -73,12 +73,12 @@ function renderPieces(value) {
     html += '<div class="flex gap-3 justify-center">';
     for (let i = 0; i < dots; i++) {
       html += `<button data-remove="dot"
-                       class="group/piece relative w-8 h-8 rounded-full bg-emerald-500 shadow-md shadow-emerald-500/30
-                              hover:bg-emerald-300 hover:shadow-lg hover:shadow-emerald-400/50
-                              transition-all cursor-pointer border-2 border-emerald-400/50 active:scale-90"
+                       class="group/piece relative w-8 h-8 rounded-full bg-jungle shadow-md shadow-jungle/30
+                              hover:bg-emerald-600 hover:shadow-lg hover:shadow-jungle/50
+                              transition-all cursor-pointer border-2 border-jungle/50 active:scale-90"
                        title="Click to remove (\u22121)">
                  <span class="absolute inset-0 flex items-center justify-center text-sm font-bold
-                              text-emerald-950 opacity-0 group-hover/piece:opacity-100 transition-opacity">&times;</span>
+                              text-white opacity-0 group-hover/piece:opacity-100 transition-opacity">&times;</span>
                </button>`;
     }
     html += '</div>';
@@ -107,14 +107,14 @@ export function renderLevel(position, value) {
   const emptyClass = value === 0 ? ' vol-zone-empty' : '';
   return `
     <div data-level="${position}"
-         class="vol-drop-zone bg-neutral-900/80 border-2 border-dashed border-neutral-800 rounded-xl p-4 min-h-[130px]
-                relative transition-all duration-200 shadow-md hover:border-neutral-600${emptyClass}">
+         class="vol-drop-zone bg-stone-200/60 border-2 border-dashed border-stone-400 rounded-xl p-4 min-h-[130px]
+                relative transition-all duration-200 shadow-md hover:border-stone-500${emptyClass}">
       <div class="flex items-center justify-between mb-1">
         <div class="flex items-center gap-2">
-          <span class="text-[10px] uppercase tracking-widest text-neutral-500 font-medium">${posLabel}</span>
-          <span class="text-xs font-mono text-neutral-500 bg-neutral-800/80 px-1.5 py-0.5 rounded">${label}</span>
+          <span class="text-[10px] uppercase tracking-widest text-stone-500 font-medium">${posLabel}</span>
+          <span class="text-xs font-mono text-stone-600 bg-stone-300/80 px-1.5 py-0.5 rounded">${label}</span>
         </div>
-        <span class="text-sm font-mono text-neutral-400 tabular-nums">${value}</span>
+        <span class="text-sm font-mono text-stone-600 tabular-nums">${value}</span>
       </div>
       <div id="level-pieces-${position}">
         ${renderPieces(value)}
@@ -127,7 +127,7 @@ export function renderLevelStack(levels) {
     <div class="flex flex-col gap-3 w-full max-w-[280px]">
       ${renderLevel(0, levels[0])}
       <div class="flex justify-center">
-        <div class="w-px h-3 bg-neutral-700"></div>
+        <div class="w-px h-3 bg-stone-400"></div>
       </div>
       ${renderLevel(1, levels[1])}
     </div>`;
@@ -141,19 +141,19 @@ export function renderVolumeMeter(percentage) {
 
   return `
     <div class="flex flex-col items-center gap-2">
-      <div class="relative h-64 w-10 bg-neutral-900 rounded-full border border-neutral-800 overflow-hidden"
+      <div class="relative h-64 w-10 bg-stone-300 rounded-full border border-stone-400 overflow-hidden"
            id="vol-meter-container" style="box-shadow: ${glow}">
         <div class="absolute bottom-0 w-full rounded-full transition-all duration-300 ease-out"
              style="height: ${clamped}%; background-image: ${gradient}" id="vol-meter-fill"></div>
         ${ticks.map(t => `
           <div class="absolute w-full flex items-center" style="bottom: ${t}%">
-            <div class="w-2 h-px bg-neutral-700"></div>
+            <div class="w-2 h-px bg-stone-400"></div>
           </div>
         `).join('')}
       </div>
       <div class="flex flex-col items-center">
         ${ticks.reverse().map(t => `
-          <span class="text-[9px] text-neutral-600 leading-[25.6px]">${t}</span>
+          <span class="text-[9px] text-stone-500 leading-[25.6px]">${t}</span>
         `).join('')}
       </div>
     </div>`;
@@ -166,29 +166,29 @@ export function renderDecimalReadout(decimal, volume, dangerLevel) {
       ? 'text-6xl md:text-7xl'
       : 'text-5xl md:text-6xl';
   const colorClass = dangerLevel === 'overload'
-    ? 'text-red-400'
+    ? 'text-red-600'
     : dangerLevel === 'danger'
-      ? 'text-orange-400'
+      ? 'text-orange-600'
       : dangerLevel === 'hot'
-        ? 'text-amber-400'
-        : 'text-neutral-100';
+        ? 'text-amber-600'
+        : 'text-stone-800';
 
   return `
     <div class="text-center">
-      <div class="text-[10px] uppercase tracking-widest text-neutral-500 mb-2 font-medium">Now Playing At</div>
+      <div class="text-[10px] uppercase tracking-widest text-stone-500 mb-2 font-medium">Now Playing At</div>
       <div id="vol-readout" class="font-mono font-bold tabular-nums transition-all duration-300 ${sizeClass} ${colorClass}">
         ${volume}%
       </div>
       ${decimal !== volume ? `
-        <div class="text-xs text-neutral-600 mt-1 font-mono">
-          Mayan value: ${decimal} <span class="text-neutral-700">(capped at 100)</span>
+        <div class="text-xs text-stone-500 mt-1 font-mono">
+          Mayan value: ${decimal} <span class="text-stone-400">(capped at 100)</span>
         </div>` : ''}
       ${decimal > 100 ? `
-        <div class="mt-2 inline-block px-3 py-1 bg-red-900/50 border border-red-800 rounded-full text-xs text-red-400 font-medium animate-pulse">
+        <div class="mt-2 inline-block px-3 py-1 bg-red-900/50 border border-red-800 rounded-full text-xs text-red-600 font-medium animate-pulse">
           EXCEEDS MAXIMUM
         </div>` : ''}
       ${decimal === 100 ? `
-        <div class="mt-2 inline-block px-3 py-1 bg-emerald-900/50 border border-emerald-800 rounded-full text-xs text-emerald-400 font-medium">
+        <div class="mt-2 inline-block px-3 py-1 bg-jungle/20 border border-jungle rounded-full text-xs text-jungle font-medium">
           Maximum Vigesimal Output
         </div>` : ''}
     </div>`;
@@ -201,19 +201,19 @@ export function renderControls(isPlaying, soundType) {
       <button data-action="play-pause"
               class="w-14 h-14 rounded-full flex items-center justify-center transition-all
                      ${isPlaying
-                       ? 'bg-neutral-100 text-neutral-900 hover:bg-neutral-300 shadow-lg shadow-neutral-100/20'
-                       : 'bg-neutral-800 text-neutral-100 hover:bg-neutral-700 border border-neutral-700'}">
+                       ? 'bg-stone-700 text-parchment-light hover:bg-stone-600 shadow-lg shadow-stone-700/20'
+                       : 'bg-stone-200 text-stone-700 hover:bg-stone-300 border border-stone-300'}">
         ${isPlaying
           ? '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>'
           : '<svg class="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
       </button>
-      <div class="flex rounded-lg overflow-hidden border border-neutral-800">
+      <div class="flex rounded-lg overflow-hidden border border-stone-300">
         ${types.map(t => `
           <button data-action="sound-type" data-type="${t}"
                   class="px-3 py-1.5 text-xs font-medium capitalize transition-colors
                          ${t === soundType
-                           ? 'bg-neutral-100 text-neutral-900'
-                           : 'bg-neutral-900 text-neutral-400 hover:text-neutral-200'}">
+                           ? 'bg-stone-700 text-parchment-light'
+                           : 'bg-stone-200 text-stone-600 hover:text-stone-800'}">
             ${t}
           </button>
         `).join('')}
@@ -260,7 +260,7 @@ export function renderVolumePage(levels, isPlaying, soundType, tagline, decimal,
           ${renderControls(isPlaying, soundType)}
         </div>
 
-        <footer class="mt-12 text-center text-neutral-700 text-xs">
+        <footer class="mt-12 text-center text-stone-400 text-xs">
           <p>No actual speakers were harmed. Audio capped at 100%.</p>
           <p class="mt-1">Built with the Mayan vigesimal system &middot; A base-20 experiment</p>
         </footer>
@@ -269,8 +269,8 @@ export function renderVolumePage(levels, isPlaying, soundType, tagline, decimal,
 }
 
 function getPageBgClass(dangerLevel) {
-  if (dangerLevel === 'overload') return 'bg-red-950';
-  return 'bg-neutral-950';
+  if (dangerLevel === 'overload') return 'bg-red-100';
+  return 'bg-gradient-to-b from-parchment to-parchment-dark';
 }
 
 // Scoped update renderers (return HTML for just the changing parts)

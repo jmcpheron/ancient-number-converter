@@ -34,6 +34,7 @@ module.exports = {
         confetti: 'confetti 1s ease-out forwards',
         zonePulse: 'zonePulse 2s ease-in-out infinite',
         zoneTargetPulse: 'zoneTargetPulse 1.2s ease-in-out infinite',
+        stickerBounce: 'stickerBounce 0.6s ease-out 1s both',
       },
       keyframes: {
         fadeIn: {
@@ -54,12 +55,18 @@ module.exports = {
           '100%': { opacity: '0', transform: 'translateY(-200px) translateX(var(--drift, 0px))' },
         },
         zonePulse: {
-          '0%, 100%': { boxShadow: 'inset 0 0 4px rgba(52, 211, 153, 0.15)' },
-          '50%': { boxShadow: 'inset 0 0 12px rgba(52, 211, 153, 0.3)' },
+          '0%, 100%': { boxShadow: 'inset 0 0 4px rgba(45, 106, 79, 0.15)' },
+          '50%': { boxShadow: 'inset 0 0 12px rgba(45, 106, 79, 0.3)' },
         },
         zoneTargetPulse: {
-          '0%, 100%': { boxShadow: '0 0 6px rgba(52, 211, 153, 0.3)', borderColor: 'rgba(52, 211, 153, 0.4)' },
-          '50%': { boxShadow: '0 0 16px rgba(52, 211, 153, 0.6)', borderColor: 'rgba(52, 211, 153, 0.7)' },
+          '0%, 100%': { boxShadow: '0 0 6px rgba(45, 106, 79, 0.3)', borderColor: 'rgba(45, 106, 79, 0.4)' },
+          '50%': { boxShadow: '0 0 16px rgba(45, 106, 79, 0.6)', borderColor: 'rgba(45, 106, 79, 0.7)' },
+        },
+        stickerBounce: {
+          '0%': { opacity: '0', transform: 'scale(0) rotate(-12deg)' },
+          '60%': { opacity: '1', transform: 'scale(1.15) rotate(-12deg)' },
+          '80%': { transform: 'scale(0.95) rotate(-12deg)' },
+          '100%': { opacity: '1', transform: 'scale(1) rotate(-12deg)' },
         },
       },
     },

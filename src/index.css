@@ -45,8 +45,8 @@ input[type="number"] {
   animation: shake 0.5s ease-in-out;
 }
 .vol-drop-active {
-  border-color: #34d399 !important;
-  box-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
+  border-color: #2D6A4F !important;
+  box-shadow: 0 0 12px rgba(45, 106, 79, 0.3);
 }
 .vol-drop-reject {
   border-color: #f87171 !important;
@@ -56,8 +56,8 @@ input[type="number"] {
   opacity: 0.5;
 }
 .vol-piece-selected {
-  background-color: rgba(52, 211, 153, 0.15);
-  box-shadow: 0 0 0 2px #34d399, 0 0 16px rgba(52, 211, 153, 0.4);
+  background-color: rgba(45, 106, 79, 0.15);
+  box-shadow: 0 0 0 2px #2D6A4F, 0 0 16px rgba(45, 106, 79, 0.4);
   border-radius: 0.5rem;
   transform: scale(1.08);
 }
@@ -66,7 +66,7 @@ input[type="number"] {
 }
 .vol-zone-target {
   animation: zoneTargetPulse 1.2s ease-in-out infinite;
-  border-color: rgba(52, 211, 153, 0.5) !important;
+  border-color: rgba(45, 106, 79, 0.5) !important;
 }
 .vol-confetti {
   position: absolute;

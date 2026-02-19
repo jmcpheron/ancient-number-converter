@@ -62,7 +62,7 @@ function updateVolumeDisplay() {
     // Update the numeric display in the level header
     const zone = document.querySelector(`[data-level="${i}"]`);
     if (zone) {
-      const numSpan = zone.querySelector('.font-mono.text-neutral-400');
+      const numSpan = zone.querySelector('.font-mono.text-stone-600');
       if (numSpan) numSpan.textContent = levels[i];
       // Toggle empty-pulse animation
       zone.classList.toggle('vol-zone-empty', levels[i] === 0);
@@ -91,8 +91,9 @@ function updateVolumeDisplay() {
   // Update page background
   const page = document.getElementById('vol-page');
   if (page) {
-    page.classList.remove('bg-neutral-950', 'bg-red-950');
-    page.classList.add(decimal > 100 ? 'bg-red-950' : 'bg-neutral-950');
+    const parchmentClasses = ['bg-gradient-to-b', 'from-parchment', 'to-parchment-dark'];
+    page.classList.remove(...parchmentClasses, 'bg-red-100');
+    page.classList.add(...(decimal > 100 ? ['bg-red-100'] : parchmentClasses));
   }
 
   // Update audio volume
