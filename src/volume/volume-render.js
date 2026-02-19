@@ -46,8 +46,13 @@ export function renderPalette() {
           </div>
         </div>
       </div>
-      <div class="text-center mt-2 text-stone-500 text-xs">
-        Tap a piece, then tap a zone
+      <div class="text-center mt-2 text-stone-500 text-xs sm:text-xs">
+        <span class="hidden sm:inline">Tap a piece, then tap a zone &mdash; or drag &amp; drop</span>
+        <span class="sm:hidden text-sm font-medium text-stone-600">
+          <span class="inline-block bg-stone-300/60 rounded px-1.5 py-0.5 mr-1">1</span>Tap a piece
+          <span class="mx-1.5 text-stone-400">&rarr;</span>
+          <span class="inline-block bg-stone-300/60 rounded px-1.5 py-0.5 mr-1">2</span>Tap a zone below
+        </span>
       </div>
     </div>`;
 }
@@ -60,9 +65,10 @@ export function decompose(value) {
 function renderPieces(value) {
   const { bars, dots, isZero } = decompose(value);
   if (isZero) {
-    return `<div class="flex flex-col items-center justify-center h-full py-3 gap-1">
+    return `<div class="flex flex-col items-center justify-center h-full py-4 gap-1.5">
       <span class="text-3xl text-stone-400">&#x1D330;</span>
-      <span class="text-[10px] text-stone-500 uppercase tracking-wider">Tap or drop pieces here</span>
+      <span class="text-xs sm:text-[10px] text-stone-500 font-medium uppercase tracking-wider">Drop here</span>
+      <span class="text-[10px] text-stone-400 sm:hidden">&darr; Tap a piece above, then tap this zone</span>
     </div>`;
   }
 
@@ -107,7 +113,8 @@ export function renderLevel(position, value) {
   const emptyClass = value === 0 ? ' vol-zone-empty' : '';
   return `
     <div data-level="${position}"
-         class="vol-drop-zone bg-stone-200/60 border-2 border-dashed border-stone-400 rounded-xl p-4 min-h-[130px]
+         class="vol-drop-zone bg-stone-200/60 border-2 border-dashed border-stone-400 rounded-xl
+                p-4 min-h-[130px] sm:min-h-[130px]
                 relative transition-all duration-200 shadow-md hover:border-stone-500${emptyClass}">
       <div class="flex items-center justify-between mb-1">
         <div class="flex items-center gap-2">
