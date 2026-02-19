@@ -1,6 +1,7 @@
 let audioCtx = null;
 let gainNode = null;
 let sourceNodes = [];
+let unlocked = false;
 
 export function initAudio() {
   if (audioCtx) return;
@@ -13,6 +14,25 @@ function ensureResumed() {
   if (audioCtx && audioCtx.state === 'suspended') {
     audioCtx.resume();
   }
+}
+
+/**
+ * Call this on the first user gesture (tap/click anywhere) to unlock
+ * audio playback on mobile browsers. iOS Safari and Chrome on Android
+ * require a user-initiated audio context resume + silent buffer play
+ * before real audio will work.
+ */
+export function unlockAudio() {
+  if (unlocked) return;
+  initAudio();
+  ensureResumed();
+  // Play a silent buffer to fully unlock the audio pipeline on iOS
+  const silent = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+  const src = audioCtx.createBufferSource();
+  src.buffer = silent;
+  src.connect(audioCtx.destination);
+  src.start();
+  unlocked = true;
 }
 
 function stopSources() {
