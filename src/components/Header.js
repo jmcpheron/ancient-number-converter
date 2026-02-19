@@ -7,5 +7,9 @@ export function renderHeader() {
       <p class="font-crimson text-lg md:text-xl text-stone-600 mt-2 italic">
         Explore how civilizations counted across millennia
       </p>
+      <a href="volume.html"
+         class="inline-block mt-2 text-sm text-jungle hover:text-emerald-700 transition-colors font-crimson">
+        Try the Mayan Volume Control &rarr;
+      </a>
     </header>`;
 }

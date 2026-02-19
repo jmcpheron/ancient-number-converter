@@ -1,6 +1,7 @@
 module.exports = {
   content: [
     "./index.html",
+    "./volume.html",
     "./src/**/*.js",
   ],
   theme: {
@@ -29,6 +30,10 @@ module.exports = {
       animation: {
         fadeIn: 'fadeIn 0.3s ease-in-out',
         stepReveal: 'stepReveal 0.4s ease-out forwards',
+        shake: 'shake 0.5s ease-in-out',
+        confetti: 'confetti 1s ease-out forwards',
+        zonePulse: 'zonePulse 2s ease-in-out infinite',
+        zoneTargetPulse: 'zoneTargetPulse 1.2s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -38,6 +43,23 @@ module.exports = {
         stepReveal: {
           '0%': { opacity: '0', transform: 'translateX(-12px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '10%, 50%, 90%': { transform: 'translateX(-4px)' },
+          '30%, 70%': { transform: 'translateX(4px)' },
+        },
+        confetti: {
+          '0%': { opacity: '1', transform: 'translateY(0) translateX(0)' },
+          '100%': { opacity: '0', transform: 'translateY(-200px) translateX(var(--drift, 0px))' },
+        },
+        zonePulse: {
+          '0%, 100%': { boxShadow: 'inset 0 0 4px rgba(52, 211, 153, 0.15)' },
+          '50%': { boxShadow: 'inset 0 0 12px rgba(52, 211, 153, 0.3)' },
+        },
+        zoneTargetPulse: {
+          '0%, 100%': { boxShadow: '0 0 6px rgba(52, 211, 153, 0.3)', borderColor: 'rgba(52, 211, 153, 0.4)' },
+          '50%': { boxShadow: '0 0 16px rgba(52, 211, 153, 0.6)', borderColor: 'rgba(52, 211, 153, 0.7)' },
         },
       },
     },
