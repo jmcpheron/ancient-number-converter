@@ -73,17 +73,17 @@ function renderPieces(value) {
     </div>`;
   }
 
-  let html = '<div class="flex flex-col items-center gap-2 py-1 w-full">';
+  let html = '<div class="flex flex-col items-center gap-1 w-full">';
 
   if (dots > 0) {
-    html += '<div class="flex gap-2 justify-center">';
+    html += '<div class="flex gap-1.5 justify-center">';
     for (let i = 0; i < dots; i++) {
       html += `<button data-remove="dot"
-                       class="group/piece relative w-7 h-7 rounded-full bg-jade shadow-md shadow-jade/30
+                       class="group/piece relative w-6 h-6 rounded-full bg-jade shadow-md shadow-jade/30
                               hover:bg-jade-light hover:shadow-lg hover:shadow-jade/50
                               transition-all cursor-pointer border-2 border-jade-dark/50 active:scale-90"
                        title="Click to remove (\u22121)">
-                 <span class="absolute inset-0 flex items-center justify-center text-sm font-bold
+                 <span class="absolute inset-0 flex items-center justify-center text-xs font-bold
                               text-white opacity-0 group-hover/piece:opacity-100 transition-opacity">&times;</span>
                </button>`;
     }
@@ -92,12 +92,12 @@ function renderPieces(value) {
 
   for (let i = 0; i < bars; i++) {
     html += `<button data-remove="bar"
-                     class="group/piece relative h-5 rounded-md bg-amber-500 shadow-md shadow-amber-500/30
+                     class="group/piece relative h-3 rounded-md bg-amber-500 shadow-md shadow-amber-500/30
                             hover:bg-amber-300 hover:shadow-lg hover:shadow-amber-400/50
                             transition-all cursor-pointer border-2 border-amber-400/50 active:scale-95"
                      style="width: 90%"
                      title="Click to remove (\u22125)">
-               <span class="absolute inset-0 flex items-center justify-center text-xs font-bold
+               <span class="absolute inset-0 flex items-center justify-center text-[9px] font-bold
                             text-amber-950 opacity-0 group-hover/piece:opacity-100 transition-opacity">&times;</span>
              </button>`;
   }
@@ -247,22 +247,8 @@ export function renderTooLoudOverlay(quip) {
     </div>`;
 }
 
-// ── Readout renderers (used by scoped updates) ──
-export function renderReadoutTotal(decimal) {
-  const badge = decimal > 100
-    ? `<span class="text-[8px] text-red-400 font-medium animate-pulse ml-1">EXCEEDS MAX</span>`
-    : decimal === 100
-      ? `<span class="text-[8px] text-jade-light font-medium ml-1">MAXIMUM</span>`
-      : '';
-  return `
-    <div class="text-[9px] uppercase tracking-[0.15em] text-stone-500 font-cinzel mb-0.5">Total</div>
-    <div class="flex items-center justify-center">
-      <span id="vol-readout-total" class="font-mono text-2xl font-bold tabular-nums text-parchment">${decimal}</span>
-      ${badge}
-    </div>`;
-}
-
-export function renderReadoutVolume(volume, dangerLevel) {
+// ── Now-Playing readout (replaces separate Total + Volume panels) ──
+export function renderNowPlaying(volume, decimal, dangerLevel) {
   const colorClass = dangerLevel === 'overload'
     ? 'text-red-400'
     : dangerLevel === 'danger'
@@ -270,9 +256,18 @@ export function renderReadoutVolume(volume, dangerLevel) {
       : dangerLevel === 'hot'
         ? 'text-amber-400'
         : 'text-parchment';
+
+  let extra = '';
+  if (decimal > 100) {
+    extra = `<div class="text-[9px] text-red-400 font-mono mt-0.5 animate-pulse">Mayan value: ${decimal} <span class="text-stone-500">(capped at 100)</span></div>`;
+  } else if (decimal === 100) {
+    extra = `<div class="text-[9px] text-jade-light font-cinzel mt-0.5">Maximum Vigesimal Output</div>`;
+  }
+
   return `
-    <div class="text-[9px] uppercase tracking-[0.15em] text-stone-500 font-cinzel mb-0.5">Volume</div>
-    <span id="vol-readout" class="font-mono text-2xl font-bold tabular-nums ${colorClass}">${volume}%</span>`;
+    <div class="text-[10px] uppercase tracking-[0.2em] text-stone-500 font-cinzel mb-1">Volume</div>
+    <div id="vol-readout" class="font-mono text-3xl font-bold tabular-nums transition-colors duration-300 ${colorClass}">${volume}%</div>
+    ${extra}`;
 }
 
 // ── Full page composition ───────────────────
@@ -302,98 +297,77 @@ export function renderVolumePage(levels, isPlaying, soundType, tagline, decimal,
           <div class="vol-glyph-divider w-[90%] mt-1"></div>
         </div>
 
-        <!-- Zone labels row -->
-        <div class="vol-region" style="top:7%; left:2%; width:96%; height:3%">
-          <div class="flex w-full justify-between items-center px-[2%]">
-            <div class="flex items-center gap-1.5">
-              <span class="font-cinzel text-[10px] uppercase tracking-widest text-stone-400 font-medium">Twenties</span>
-              <span class="text-[9px] font-mono text-stone-600">\u00d720</span>
-              <span class="text-[10px] font-mono text-stone-500">=</span>
-              <span id="level-value-0" class="text-sm font-mono text-parchment font-bold tabular-nums">${levels[0]}</span>
+        <!-- ═══ Two-column layout: Palette (left) │ Zones (right) ═══ -->
+
+        <!-- Left column: Palette -->
+        <div class="vol-region" style="top:7.5%; left:3%; width:25%; height:2.5%">
+          <span class="text-[9px] uppercase tracking-[0.15em] text-stone-500 font-cinzel font-semibold">Pieces</span>
+        </div>
+        <div id="vol-palette" class="vol-region flex-col" style="top:10.5%; left:3%; width:25%; height:27%">
+          <div class="flex flex-col gap-1.5 w-full h-full justify-center">
+            <div draggable="true" data-piece="dot"
+                 class="vol-ctrl-btn flex items-center gap-2 px-2 py-2 w-full justify-center select-none">
+              <span class="text-2xl text-jade">&bull;</span>
+              <span class="text-[8px] text-stone-400 font-cinzel tracking-wider">Dot&middot;1</span>
             </div>
-            <div class="flex items-center gap-1.5">
-              <span class="font-cinzel text-[10px] uppercase tracking-widest text-stone-400 font-medium">Ones</span>
-              <span class="text-[9px] font-mono text-stone-600">\u00d71</span>
-              <span class="text-[10px] font-mono text-stone-500">=</span>
-              <span id="level-value-1" class="text-sm font-mono text-parchment font-bold tabular-nums">${levels[1]}</span>
+            <div draggable="true" data-piece="bar"
+                 class="vol-ctrl-btn flex items-center gap-2 px-2 py-2 w-full justify-center select-none">
+              <span class="text-2xl text-amber-400">&minus;</span>
+              <span class="text-[8px] text-stone-400 font-cinzel tracking-wider">Bar&middot;5</span>
+            </div>
+            <div draggable="true" data-piece="shell"
+                 class="vol-ctrl-btn flex items-center gap-2 px-2 py-2 w-full justify-center select-none">
+              <span class="text-xl text-stone-400">&#x1D330;</span>
+              <span class="text-[7px] text-stone-400 font-cinzel tracking-wider">Shell&middot;0</span>
             </div>
           </div>
         </div>
+        <div class="vol-region text-center" style="top:38%; left:3%; width:25%; height:3%">
+          <span class="text-stone-600 text-[7px] font-crimson leading-tight">Tap piece,<br>then tap zone</span>
+        </div>
 
-        <!-- Zone: Twenties -->
+        <!-- Right column: Zones (Mayan vertical order — twenties on top, ones below) -->
+        <div class="vol-region" style="top:7.5%; left:31%; width:66%; height:2.5%">
+          <div class="flex items-center gap-1.5">
+            <span class="font-cinzel text-[9px] uppercase tracking-widest text-stone-400 font-medium">Twenties</span>
+            <span class="text-[8px] font-mono text-stone-600">\u00d720</span>
+            <span class="text-[9px] font-mono text-stone-500">=</span>
+            <span id="level-value-0" class="text-sm font-mono text-parchment font-bold tabular-nums">${levels[0]}</span>
+          </div>
+        </div>
         <div data-level="0"
              class="vol-region vol-zone-frame${levels[0] === 0 ? ' vol-zone-empty' : ''}"
-             style="top:10.5%; left:3%; width:45%; height:24%">
-          <span class="absolute inset-0 flex items-center justify-center text-7xl font-cinzel font-bold text-stone-600/[0.12] pointer-events-none select-none tracking-wider">&times;20</span>
+             style="top:10.5%; left:31%; width:66%; height:15%">
+          <span class="absolute inset-0 flex items-center justify-center text-6xl font-cinzel font-bold text-stone-600/[0.10] pointer-events-none select-none tracking-wider">&times;20</span>
           <div id="level-pieces-0" class="w-full h-full flex items-center justify-center relative">
             ${renderPieces(levels[0])}
           </div>
         </div>
 
-        <!-- Zone: Ones -->
+        <div class="vol-region" style="top:26.5%; left:31%; width:66%; height:2.5%">
+          <div class="flex items-center gap-1.5">
+            <span class="font-cinzel text-[9px] uppercase tracking-widest text-stone-400 font-medium">Ones</span>
+            <span class="text-[8px] font-mono text-stone-600">\u00d71</span>
+            <span class="text-[9px] font-mono text-stone-500">=</span>
+            <span id="level-value-1" class="text-sm font-mono text-parchment font-bold tabular-nums">${levels[1]}</span>
+          </div>
+        </div>
         <div data-level="1"
              class="vol-region vol-zone-frame${levels[1] === 0 ? ' vol-zone-empty' : ''}"
-             style="top:10.5%; left:52%; width:45%; height:24%">
-          <span class="absolute inset-0 flex items-center justify-center text-7xl font-cinzel font-bold text-stone-600/[0.12] pointer-events-none select-none tracking-wider">&times;1</span>
+             style="top:29.5%; left:31%; width:66%; height:15%">
+          <span class="absolute inset-0 flex items-center justify-center text-6xl font-cinzel font-bold text-stone-600/[0.10] pointer-events-none select-none tracking-wider">&times;1</span>
           <div id="level-pieces-1" class="w-full h-full flex items-center justify-center relative">
             ${renderPieces(levels[1])}
           </div>
         </div>
 
-        <!-- Divider -->
-        <div class="vol-region" style="top:36%; left:5%; width:90%; height:1%">
-          <div class="vol-glyph-divider w-full"></div>
-        </div>
-
-        <!-- Palette header + buttons -->
-        <div class="vol-region" style="top:37.5%; left:5%; width:90%; height:2%">
-          <span class="text-[10px] uppercase tracking-[0.2em] text-stone-500 font-cinzel font-semibold">Pieces</span>
-        </div>
-        <div id="vol-palette" class="vol-region" style="top:39.5%; left:5%; width:90%; height:8%">
-          <div class="flex justify-center gap-3 w-full">
-            <div draggable="true" data-piece="dot"
-                 class="vol-ctrl-btn flex flex-col items-center gap-0.5 px-4 py-2
-                        min-w-[60px] justify-center select-none">
-              <span class="text-2xl text-jade">&bull;</span>
-              <span class="text-[8px] text-stone-400 font-cinzel tracking-wider">Dot &middot; 1</span>
-            </div>
-            <div draggable="true" data-piece="bar"
-                 class="vol-ctrl-btn flex flex-col items-center gap-0.5 px-4 py-2
-                        min-w-[60px] justify-center select-none">
-              <span class="text-2xl text-amber-400">&minus;</span>
-              <span class="text-[8px] text-stone-400 font-cinzel tracking-wider">Bar &middot; 5</span>
-            </div>
-            <div draggable="true" data-piece="shell"
-                 class="vol-ctrl-btn flex flex-col items-center gap-0.5 px-4 py-2
-                        min-w-[60px] justify-center select-none">
-              <span class="text-2xl text-stone-400">&#x1D330;</span>
-              <span class="text-[8px] text-stone-400 font-cinzel tracking-wider">Shell &middot; 0 (set)</span>
-            </div>
-          </div>
-        </div>
-        <div class="vol-region text-center" style="top:48%; left:5%; width:90%; height:1.5%">
-          <span class="text-stone-500 text-[9px] font-crimson">Tap a piece, then tap a zone. Shell sets a zone to 0.</span>
-        </div>
-
         <!-- Glyph divider -->
-        <div class="vol-region" style="top:50.5%; left:5%; width:90%; height:1%">
+        <div class="vol-region" style="top:46%; left:5%; width:90%; height:1%">
           <div class="vol-glyph-divider w-full"></div>
-        </div>
-
-        <!-- Readouts -->
-        <div class="vol-region" style="top:52.5%; left:5%; width:90%; height:12%">
-          <div class="flex justify-center gap-3 w-full">
-            <div id="vol-total-patch" class="vol-stone-panel px-4 py-2 text-center flex-1 max-w-[160px]">
-              ${renderReadoutTotal(decimal)}
-            </div>
-            <div id="vol-volume-patch" class="vol-stone-panel px-4 py-2 text-center flex-1 max-w-[160px]">
-              ${renderReadoutVolume(volume, dangerLevel)}
-            </div>
-          </div>
         </div>
 
         <!-- Volume meter -->
-        <div class="vol-region flex-col" style="top:66%; left:5%; width:90%; height:5%">
+        <div class="vol-region flex-col" style="top:48%; left:5%; width:90%; height:5%">
           <div class="w-full vol-meter-track h-5 relative" id="vol-meter-container"
                style="box-shadow: inset 2px 2px 6px rgba(0,0,0,0.6), ${glow}">
             <div class="absolute left-0 top-0 h-full rounded-full transition-all duration-300 ease-out"
@@ -414,30 +388,31 @@ export function renderVolumePage(levels, isPlaying, soundType, tagline, decimal,
         </div>
 
         <!-- Divider -->
-        <div class="vol-region" style="top:72.5%; left:5%; width:90%; height:1%">
+        <div class="vol-region" style="top:55%; left:5%; width:90%; height:1%">
           <div class="vol-glyph-divider w-full"></div>
         </div>
 
-        <!-- Now Playing scroll area -->
-        <div class="vol-region" style="top:74%; left:5%; width:90%; height:16%">
+        <!-- Now Playing + Controls -->
+        <div class="vol-region" style="top:57%; left:5%; width:90%; height:18%">
           <div class="vol-stone-panel w-full h-full px-4 py-3 flex flex-col items-center justify-center">
-            <div class="text-[10px] uppercase tracking-[0.2em] text-stone-500 font-cinzel mb-1">Now Playing At</div>
-            <div id="vol-scroll-pct" class="font-mono text-3xl font-bold text-parchment mb-2">${volume}%</div>
-            <div id="vol-controls">
+            <div id="vol-now-playing">
+              ${renderNowPlaying(volume, decimal, dangerLevel)}
+            </div>
+            <div id="vol-controls" class="mt-2">
               ${renderControls(isPlaying, soundType)}
             </div>
           </div>
         </div>
 
         <!-- Tagline -->
-        <div class="vol-region" style="top:91.5%; left:5%; width:90%; height:3%">
+        <div class="vol-region" style="top:77%; left:5%; width:90%; height:3%">
           <p id="vol-tagline" class="text-[9px] text-stone-600 font-crimson italic tracking-wide text-center">
             ${tagline}
           </p>
         </div>
 
         <!-- Footer -->
-        <div class="vol-region flex-col" style="top:94.5%; left:5%; width:90%; height:4%">
+        <div class="vol-region flex-col" style="top:81%; left:5%; width:90%; height:4%">
           <p class="text-stone-600 text-[8px] font-crimson text-center">No actual speakers were harmed. Audio capped at 100%.</p>
           <p class="text-stone-700 text-[7px] font-crimson text-center mt-0.5">Built with the Mayan vigesimal system &middot; A base-20 experiment</p>
         </div>
