@@ -1,4 +1,4 @@
-import { renderVolumePage, renderLevelPieces, renderReadoutTotal, renderReadoutVolume, renderControls, renderTooLoudOverlay } from './volume-render.js';
+import { renderVolumePage, renderLevelPieces, renderNowPlaying, renderControls, renderTooLoudOverlay } from './volume-render.js';
 import { getRandomTagline, getDangerLevel, triggerShake, triggerConfetti, getMeterGradient, getGlowShadow } from './volume-effects.js';
 import { initAudio, play, stop, setVolume, unlockAudio } from './volume-audio.js';
 import { decompose } from './volume-render.js';
@@ -92,15 +92,9 @@ function updateVolumeDisplay() {
     thumb.style.left = `${Math.min(volume, 100)}%`;
   }
 
-  // Update readout values
-  const totalPatch = document.getElementById('vol-total-patch');
-  if (totalPatch) totalPatch.innerHTML = renderReadoutTotal(decimal);
-  const volPatch = document.getElementById('vol-volume-patch');
-  if (volPatch) volPatch.innerHTML = renderReadoutVolume(volume, danger);
-
-  // Update scroll percentage display
-  const scrollPct = document.getElementById('vol-scroll-pct');
-  if (scrollPct) scrollPct.textContent = volume + '%';
+  // Update now-playing readout (volume %, overload info)
+  const nowPlaying = document.getElementById('vol-now-playing');
+  if (nowPlaying) nowPlaying.innerHTML = renderNowPlaying(volume, decimal, danger);
 
   // Update page background
   const page = document.getElementById('vol-page');
