@@ -1,6 +1,6 @@
 import { renderVolumePage, renderLevelPieces, renderReadoutTotal, renderReadoutVolume, renderControls, renderTooLoudOverlay } from './volume-render.js';
 import { getRandomTagline, getDangerLevel, triggerShake, triggerConfetti, getMeterGradient, getGlowShadow } from './volume-effects.js';
-import { initAudio, play, stop, setVolume } from './volume-audio.js';
+import { initAudio, play, stop, setVolume, unlockAudio } from './volume-audio.js';
 import { decompose } from './volume-render.js';
 
 // ── Constants ──────────────────────────────────
@@ -223,6 +223,17 @@ function canAdd(levelIdx, piece) {
 function setupEvents() {
   const root = document.getElementById('vol-root');
 
+  // Unlock mobile audio on the very first user gesture (tap or click anywhere).
+  // iOS Safari and Chrome Android suspend the AudioContext until a user gesture
+  // plays audio. We do this once, as early as possible.
+  function onFirstInteraction() {
+    unlockAudio();
+    root.removeEventListener('touchstart', onFirstInteraction);
+    root.removeEventListener('click', onFirstInteraction);
+  }
+  root.addEventListener('touchstart', onFirstInteraction, { passive: true });
+  root.addEventListener('click', onFirstInteraction);
+
   // Desktop DnD
   root.addEventListener('dragstart', (e) => {
     const token = e.target.closest('[data-piece]');
@@ -301,9 +312,11 @@ function setupEvents() {
       selectedPiece = null;
       updatePaletteSelection();
       touchClone = touchSourceEl.cloneNode(true);
-      touchClone.className = 'fixed pointer-events-none z-50 opacity-80 scale-110';
+      touchClone.className = 'vol-touch-clone';
       touchClone.style.transition = 'none';
       document.body.appendChild(touchClone);
+      // Show "drop here" labels on all zones during drag
+      root.querySelectorAll('[data-level]').forEach(z => z.classList.add('vol-zone-drag-hint'));
     }
 
     e.preventDefault();
@@ -352,8 +365,8 @@ function setupEvents() {
     touchClone = null;
     touchPiece = null;
     touchSourceEl = null;
-    root.querySelectorAll('.vol-drop-active, .vol-drop-reject').forEach((el) => {
-      el.classList.remove('vol-drop-active', 'vol-drop-reject');
+    root.querySelectorAll('.vol-drop-active, .vol-drop-reject, .vol-zone-drag-hint').forEach((el) => {
+      el.classList.remove('vol-drop-active', 'vol-drop-reject', 'vol-zone-drag-hint');
     });
   });
 

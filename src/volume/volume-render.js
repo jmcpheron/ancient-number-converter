@@ -1,6 +1,62 @@
 import { getMeterGradient, getGlowShadow } from './volume-effects.js';
 
-// ── Decompose value into bars/dots ──────────
+export function renderVolumeHeader(tagline) {
+  return `
+    <header class="text-center pt-8 pb-4">
+      <a href="index.html"
+         class="inline-block text-stone-500 text-sm hover:text-stone-700 transition-colors mb-4">
+        &larr; Ancient Number Converter
+      </a>
+      <h1 class="font-cinzel text-3xl md:text-4xl font-bold text-stone-800 tracking-wide">
+        Mayan Volume Control
+      </h1>
+      <p id="vol-tagline" class="text-sm text-stone-500 mt-1 font-crimson italic tracking-wide transition-all duration-300">
+        ${tagline}
+      </p>
+    </header>`;
+}
+
+export function renderPalette() {
+  return `
+    <div id="vol-palette" class="flex flex-col items-center my-6">
+      <div class="flex justify-center gap-4">
+        <div class="bg-stone-200 border border-stone-300 rounded-xl px-3 sm:px-5 py-3 flex items-center gap-3 sm:gap-6 shadow-lg">
+          <div draggable="true" data-piece="dot"
+               class="flex items-center gap-2 cursor-pointer select-none
+                      min-w-[44px] min-h-[44px] justify-center
+                      px-3 py-1.5 rounded-lg hover:bg-stone-300 transition-all group">
+            <span class="text-2xl text-jungle group-hover:scale-110 transition-transform">&bull;</span>
+            <span class="text-xs text-stone-600 font-medium hidden sm:inline">Dot &middot; 1</span>
+          </div>
+          <div class="w-px h-8 bg-stone-400"></div>
+          <div draggable="true" data-piece="bar"
+               class="flex items-center gap-2 cursor-pointer select-none
+                      min-w-[44px] min-h-[44px] justify-center
+                      px-3 py-1.5 rounded-lg hover:bg-stone-300 transition-all group">
+            <span class="text-2xl text-amber-400 group-hover:scale-110 transition-transform">&minus;</span>
+            <span class="text-xs text-stone-600 font-medium hidden sm:inline">Bar &middot; 5</span>
+          </div>
+          <div class="w-px h-8 bg-stone-400"></div>
+          <div draggable="true" data-piece="shell"
+               class="flex items-center gap-2 cursor-pointer select-none
+                      min-w-[44px] min-h-[44px] justify-center
+                      px-3 py-1.5 rounded-lg hover:bg-stone-300 transition-all group">
+            <span class="text-2xl text-stone-500 group-hover:scale-110 transition-transform">&#x1D330;</span>
+            <span class="text-xs text-stone-600 font-medium hidden sm:inline">Shell &middot; 0</span>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-2 text-stone-500 text-xs sm:text-xs">
+        <span class="hidden sm:inline">Tap a piece, then tap a zone &mdash; or drag &amp; drop</span>
+        <span class="sm:hidden text-sm font-medium text-stone-600">
+          <span class="inline-block bg-stone-300/60 rounded px-1.5 py-0.5 mr-1">1</span>Tap a piece
+          <span class="mx-1.5 text-stone-400">&rarr;</span>
+          <span class="inline-block bg-stone-300/60 rounded px-1.5 py-0.5 mr-1">2</span>Tap a zone below
+        </span>
+      </div>
+    </div>`;
+}
+
 export function decompose(value) {
   if (value === 0) return { bars: 0, dots: 0, isZero: true };
   return { bars: Math.floor(value / 5), dots: value % 5, isZero: false };
@@ -10,12 +66,10 @@ export function decompose(value) {
 function renderPieces(value) {
   const { bars, dots, isZero } = decompose(value);
   if (isZero) {
-    return `<div class="flex flex-col items-center justify-center h-full gap-1">
-      <svg class="w-7 h-7 text-stone-600 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 4v8m0 0l-3-3m3 3l3-3" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="4" y="14" width="16" height="6" rx="1" stroke-dasharray="3 2"/>
-      </svg>
-      <span class="text-[9px] text-stone-500 font-cinzel uppercase tracking-wider">Drop here</span>
+    return `<div class="flex flex-col items-center justify-center h-full py-4 gap-1.5">
+      <span class="text-3xl text-stone-400">&#x1D330;</span>
+      <span class="text-xs sm:text-[10px] text-stone-500 font-medium uppercase tracking-wider">Drop here</span>
+      <span class="text-[10px] text-stone-400 sm:hidden">&darr; Tap a piece above, then tap this zone</span>
     </div>`;
   }
 
@@ -52,7 +106,100 @@ function renderPieces(value) {
   return html;
 }
 
-// ── Controls (play + sound type) ────────────
+export function renderLevel(position, value) {
+  const label = position === 0 ? '\u00d720' : '\u00d71';
+  const posLabel = position === 0 ? 'Twenties' : 'Ones';
+  const emptyClass = value === 0 ? ' vol-zone-empty' : '';
+  return `
+    <div data-level="${position}"
+         class="vol-drop-zone bg-stone-200/60 border-2 border-dashed border-stone-400 rounded-xl
+                p-4 min-h-[130px] sm:min-h-[130px]
+                relative transition-all duration-200 shadow-md hover:border-stone-500${emptyClass}">
+      <div class="flex items-center justify-between mb-1">
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] uppercase tracking-widest text-stone-500 font-medium">${posLabel}</span>
+          <span class="text-xs font-mono text-stone-600 bg-stone-300/80 px-1.5 py-0.5 rounded">${label}</span>
+        </div>
+        <span class="text-sm font-mono text-stone-600 tabular-nums">${value}</span>
+      </div>
+      <div id="level-pieces-${position}">
+        ${renderPieces(value)}
+      </div>
+    </div>`;
+}
+
+export function renderLevelStack(levels) {
+  return `
+    <div class="flex flex-col gap-3 w-full max-w-[280px]">
+      ${renderLevel(0, levels[0])}
+      <div class="flex justify-center">
+        <div class="w-px h-3 bg-stone-400"></div>
+      </div>
+      ${renderLevel(1, levels[1])}
+    </div>`;
+}
+
+export function renderVolumeMeter(percentage) {
+  const clamped = Math.min(percentage, 100);
+  const gradient = getMeterGradient(percentage);
+  const glow = getGlowShadow(percentage);
+  const ticks = [0, 20, 40, 60, 80, 100];
+
+  return `
+    <div class="flex flex-col items-center gap-2">
+      <div class="relative h-64 w-10 bg-stone-300 rounded-full border border-stone-400 overflow-hidden"
+           id="vol-meter-container" style="box-shadow: ${glow}">
+        <div class="absolute bottom-0 w-full rounded-full transition-all duration-300 ease-out"
+             style="height: ${clamped}%; background-image: ${gradient}" id="vol-meter-fill"></div>
+        ${ticks.map(t => `
+          <div class="absolute w-full flex items-center" style="bottom: ${t}%">
+            <div class="w-2 h-px bg-stone-400"></div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="flex flex-col items-center">
+        ${ticks.reverse().map(t => `
+          <span class="text-[9px] text-stone-500 leading-[25.6px]">${t}</span>
+        `).join('')}
+      </div>
+    </div>`;
+}
+
+export function renderDecimalReadout(decimal, volume, dangerLevel) {
+  const sizeClass = dangerLevel === 'overload'
+    ? 'text-7xl md:text-8xl vol-shake'
+    : dangerLevel === 'danger'
+      ? 'text-6xl md:text-7xl'
+      : 'text-5xl md:text-6xl';
+  const colorClass = dangerLevel === 'overload'
+    ? 'text-red-600'
+    : dangerLevel === 'danger'
+      ? 'text-orange-600'
+      : dangerLevel === 'hot'
+        ? 'text-amber-600'
+        : 'text-stone-800';
+
+  return `
+    <div class="text-center">
+      <div class="text-[10px] uppercase tracking-widest text-stone-500 mb-2 font-medium">Now Playing At</div>
+      <div id="vol-readout" class="font-mono font-bold tabular-nums transition-all duration-300 ${sizeClass} ${colorClass}">
+        ${volume}%
+      </div>
+      ${decimal !== volume ? `
+        <div class="text-xs text-stone-500 mt-1 font-mono">
+          Mayan value: ${decimal} <span class="text-stone-400">(capped at 100)</span>
+        </div>` : ''}
+      ${decimal > 100 ? `
+        <div class="mt-2 inline-block px-3 py-1 bg-red-900/50 border border-red-800 rounded-full text-xs text-red-600 font-medium animate-pulse">
+          EXCEEDS MAXIMUM
+        </div>` : ''}
+      ${decimal === 100 ? `
+        <div class="mt-2 inline-block px-3 py-1 bg-jungle/20 border border-jungle rounded-full text-xs text-jungle font-medium">
+          Maximum Vigesimal Output
+        </div>` : ''}
+    </div>`;
+}
+
 export function renderControls(isPlaying, soundType) {
   const types = ['drums', 'jungle'];
   return `
