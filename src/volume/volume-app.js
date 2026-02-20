@@ -1,6 +1,6 @@
 import { renderVolumePage, renderLevelPieces, renderNowPlaying, renderControls, renderTooLoudOverlay } from './volume-render.js';
 import { getRandomTagline, getDangerLevel, triggerShake, triggerConfetti, getMeterGradient, getGlowShadow } from './volume-effects.js';
-import { initAudio, play, stop, setVolume, unlockAudio } from './volume-audio.js';
+import { initAudio, play, stop, setVolume, unlockAudio, ensurePlaying } from './volume-audio.js';
 import { decompose } from './volume-render.js';
 
 // ── Constants ──────────────────────────────────
@@ -478,6 +478,11 @@ function setupEvents() {
       thumb.classList.remove('vol-thumb-dragging');
       thumb.style.transition = '';
     }
+    // Post-drag safety net: if audio should be playing, verify it actually is.
+    // touchend/mouseup are valid user gestures on mobile, so resume works here.
+    if (isPlaying) {
+      ensurePlaying(soundType);
+    }
   }
 
   // Mouse: down on track/thumb, move+up on document
@@ -528,6 +533,7 @@ function applyPiece(levelIdx, piece) {
     isPlaying = true;
     hasAutoStarted = true;
     document.getElementById('vol-controls').innerHTML = renderControls(isPlaying, soundType);
+    ensurePlaying(soundType);
   }
 
   // Rotate tagline occasionally

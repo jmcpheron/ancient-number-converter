@@ -162,6 +162,23 @@ export function stop() {
   stopSources();
 }
 
+/**
+ * Post-gesture safety net: verify the AudioContext is actually running.
+ * If still suspended (common on mobile), await the resume and retry.
+ * Call this from touchend/mouseup handlers — all valid user gestures.
+ */
+export function ensurePlaying(soundType) {
+  if (!audioCtx) return;
+  if (audioCtx.state === 'running' && sourceNodes.length > 0) return;
+
+  audioCtx.resume().then(() => {
+    if (sourceNodes.length === 0) {
+      const creator = SOUND_CREATORS[soundType] || SOUND_CREATORS.tone;
+      sourceNodes = creator(audioCtx, gainNode);
+    }
+  });
+}
+
 export function setVolume(fraction) {
   if (!gainNode) return;
   const clamped = Math.max(0, Math.min(1, fraction));
