@@ -66,10 +66,10 @@ export function decompose(value) {
 function renderPieces(value) {
   const { bars, dots, isZero } = decompose(value);
   if (isZero) {
-    return `<div class="flex flex-col items-center justify-center h-full py-4 gap-1.5">
-      <span class="text-3xl text-stone-400">&#x1D330;</span>
-      <span class="text-xs sm:text-[10px] text-stone-500 font-medium uppercase tracking-wider">Drop here</span>
-      <span class="text-[10px] text-stone-400 sm:hidden">&darr; Tap a piece above, then tap this zone</span>
+    return `<div class="flex flex-col items-center justify-center h-full gap-1">
+      <span class="text-3xl text-stone-500/70 leading-none">&#x1D330;</span>
+      <span class="text-[9px] text-stone-500 font-cinzel uppercase tracking-wider">Shell (0)</span>
+      <span class="text-[8px] text-stone-600 font-crimson italic">Drop dot/bar to add</span>
     </div>`;
   }
 
@@ -367,12 +367,12 @@ export function renderVolumePage(levels, isPlaying, soundType, tagline, decimal,
                  class="vol-ctrl-btn flex flex-col items-center gap-0.5 px-4 py-2
                         min-w-[60px] justify-center select-none">
               <span class="text-2xl text-stone-400">&#x1D330;</span>
-              <span class="text-[8px] text-stone-400 font-cinzel tracking-wider">Shell &middot; 0</span>
+              <span class="text-[8px] text-stone-400 font-cinzel tracking-wider">Shell &middot; 0 (set)</span>
             </div>
           </div>
         </div>
         <div class="vol-region text-center" style="top:48%; left:5%; width:90%; height:1.5%">
-          <span class="text-stone-500 text-[9px] font-crimson">Tap a piece, then tap a zone</span>
+          <span class="text-stone-500 text-[9px] font-crimson">Tap a piece, then tap a zone. Shell sets a zone to 0.</span>
         </div>
 
         <!-- Glyph divider -->
