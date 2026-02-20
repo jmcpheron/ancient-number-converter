@@ -81,18 +81,21 @@ export function renderControls(isPlaying, soundType) {
 }
 
 // ── Too Loud overlay ────────────────────────
-export function renderTooLoudOverlay() {
+export function renderTooLoudOverlay(quip) {
   return `
     <div id="vol-overlay"
          class="fixed inset-0 bg-red-900/90 flex items-center justify-center z-50 animate-pulse">
       <div class="text-center vol-shake">
         <div class="text-6xl md:text-8xl font-black text-red-200 tracking-widest">TOO LOUD</div>
         <div class="mt-4 text-2xl md:text-4xl animate-spin inline-block">&#x1D330;</div>
-        <div class="mt-2 text-red-300 text-sm">The ancient gods of audio are displeased</div>
-        <button data-action="dismiss-overlay"
-                class="mt-6 px-4 py-2 bg-red-800 hover:bg-red-700 text-red-200 rounded-lg text-sm transition-colors">
-          I'll turn it down
+        <div class="mt-2 text-red-300 text-base font-crimson italic">${quip}</div>
+        <button data-action="reset-volume"
+                class="mt-6 w-16 h-16 rounded-full bg-red-800/80 hover:bg-red-700 border-2 border-red-600/40
+                       text-red-200 transition-all hover:scale-110 flex flex-col items-center justify-center mx-auto">
+          <span class="text-3xl leading-none">&#x1D330;</span>
+          <span class="text-[7px] font-cinzel uppercase tracking-wider mt-0.5">Reset</span>
         </button>
+        <div class="mt-2 text-red-400/60 text-[9px] font-crimson">Auto-resets in a moment...</div>
       </div>
     </div>`;
 }

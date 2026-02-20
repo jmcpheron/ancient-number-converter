@@ -112,7 +112,7 @@ function updateVolumeDisplay() {
   // Update audio volume
   setVolume(volume / 100);
 
-  // TOO LOUD overlay — brief flash, then dismiss
+  // TOO LOUD overlay — show then auto-reset
   const existingOverlay = document.getElementById('vol-overlay');
   if (decimal > 100 && !existingOverlay) {
     // Stop audio immediately on overload
@@ -121,10 +121,11 @@ function updateVolumeDisplay() {
     document.getElementById('vol-controls').innerHTML = renderControls(isPlaying, soundType);
 
     const root = document.getElementById('vol-root');
-    root.insertAdjacentHTML('afterbegin', renderTooLoudOverlay());
+    const quip = overlayQuips[Math.floor(Math.random() * overlayQuips.length)];
+    root.insertAdjacentHTML('afterbegin', renderTooLoudOverlay(quip));
     triggerShake(page);
     clearTimeout(overlayTimeout);
-    overlayTimeout = setTimeout(dismissOverlay, 2000);
+    overlayTimeout = setTimeout(resetVolume, 5000);
   } else if (decimal <= 100 && existingOverlay) {
     clearTimeout(overlayTimeout);
     existingOverlay.remove();
@@ -168,13 +169,30 @@ function updatePaletteSelection() {
   });
 }
 
-// ── Overlay dismiss ────────────────────────────
-function dismissOverlay() {
+// ── Too-loud quips ────────────────────────────
+const overlayQuips = [
+  'What the shell?!',
+  'Shell no! Way too loud!',
+  'The ancient gods of audio are displeased',
+  "You've angered Kukulkan!",
+  'Even the jaguars are covering their ears',
+  'The pyramid is shaking!',
+  "That's un-shell-ievable!",
+  'Holy shell! Turn it down!',
+  'Shell shocked! \u{1D330}\u{1D330}\u{1D330}',
+];
+
+// ── Overlay reset ─────────────────────────────
+function resetVolume() {
   clearTimeout(overlayTimeout);
   const overlay = document.getElementById('vol-overlay');
   if (overlay) overlay.remove();
+  levels = [0, 0];
   stop();
   isPlaying = false;
+  hasAutoStarted = false;
+  confettiFired = false;
+  updateVolumeDisplay();
   document.getElementById('vol-controls').innerHTML = renderControls(isPlaying, soundType);
 }
 
@@ -357,9 +375,9 @@ function setupEvents() {
       return;
     }
 
-    // Dismiss TOO LOUD overlay
-    if (e.target.closest('[data-action="dismiss-overlay"]')) {
-      dismissOverlay();
+    // Reset from TOO LOUD overlay
+    if (e.target.closest('[data-action="reset-volume"]')) {
+      resetVolume();
       return;
     }
 
