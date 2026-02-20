@@ -1,0 +1,2 @@
+[  219739ms] TypeError: e.target.className.slice is not a function
+    at HTMLDivElement.eval (eval at evaluate (:301:30), <anonymous>:7:61)
