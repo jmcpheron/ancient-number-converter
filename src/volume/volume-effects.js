@@ -6,10 +6,10 @@ const TAGLINES = [
   'Now with 400% More Range Than You Need',
   'Enterprise-Grade Ancient Technology',
   'Mathematically Accurate Volume',
-  'Approved by the Long Count Calendar Board',
+  'May Cause Spontaneous Pyramid Construction',
   'Carbon-Dated Audio Fidelity',
-  'Peer-Reviewed by Mesoamerican Scholars',
-  'ISO 20:20 Compliant',
+  'Caution: Contains Trace Amounts of Obsidian',
+  'Pairs Well with Cacao',
   'Not Responsible for Jaguar Summons',
 ];
 
