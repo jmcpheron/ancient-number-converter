@@ -443,13 +443,6 @@ function setupEvents() {
       thumb.style.left = `${pct}%`;
     }
     updateVolumeDisplay();
-    // Autoplay on first interaction
-    if (!hasAutoStarted && decimal > 0) {
-      initAudio(); play(soundType);
-      setVolume(computeVolume(levels) / 100);
-      isPlaying = true; hasAutoStarted = true;
-      document.getElementById('vol-controls').innerHTML = renderControls(isPlaying, soundType);
-    }
     // Rotate tagline occasionally
     if (Math.random() < 0.3) {
       tagline = getRandomTagline();
@@ -463,6 +456,15 @@ function setupEvents() {
     const thumb = document.getElementById('vol-meter-thumb');
     if (thumb) thumb.classList.add('vol-thumb-dragging');
     applySliderPosition(clientX);
+    // Start audio eagerly during touchstart/mousedown — these are valid
+    // user gestures on mobile.  touchmove is NOT, so waiting for the drag
+    // to reach decimal > 0 would silently fail on iOS/Android.
+    if (!hasAutoStarted) {
+      initAudio(); play(soundType);
+      setVolume(computeVolume(levels) / 100);
+      isPlaying = true; hasAutoStarted = true;
+      document.getElementById('vol-controls').innerHTML = renderControls(isPlaying, soundType);
+    }
     e.preventDefault();
   }
 
