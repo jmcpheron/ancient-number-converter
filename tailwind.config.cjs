@@ -12,6 +12,18 @@ module.exports = {
           dark: '#F5E6C8',
           light: '#FDF8F0',
         },
+        sandstone: {
+          DEFAULT: '#E8D5B7',
+          light: '#F2E6D0',
+          dark: '#D4BC94',
+          deep: '#C4A882',
+        },
+        jade: {
+          DEFAULT: '#3B8B5E',
+          light: '#5CAD7E',
+          dark: '#2A6B46',
+        },
+        obsidian: '#2C2416',
         jungle: '#2D6A4F',
         amber: '#D4A017',
         clay: '#C08552',
@@ -35,6 +47,7 @@ module.exports = {
         zonePulse: 'zonePulse 2s ease-in-out infinite',
         zoneTargetPulse: 'zoneTargetPulse 1.2s ease-in-out infinite',
         stickerBounce: 'stickerBounce 0.6s ease-out 1s both',
+        jadeGlow: 'jadeGlow 2s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -67,6 +80,10 @@ module.exports = {
           '60%': { opacity: '1', transform: 'scale(1.15) rotate(-12deg)' },
           '80%': { transform: 'scale(0.95) rotate(-12deg)' },
           '100%': { opacity: '1', transform: 'scale(1) rotate(-12deg)' },
+        },
+        jadeGlow: {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(59, 139, 94, 0.3)' },
+          '50%': { boxShadow: '0 0 20px rgba(59, 139, 94, 0.6), 0 0 40px rgba(59, 139, 94, 0.2)' },
         },
       },
     },

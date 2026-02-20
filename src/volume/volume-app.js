@@ -1,4 +1,4 @@
-import { renderVolumePage, renderLevelPieces, renderLevel, renderDecimalReadout, renderControls, renderVolumeMeter, renderTooLoudOverlay } from './volume-render.js';
+import { renderVolumePage, renderLevelPieces, renderReadoutTotal, renderReadoutVolume, renderControls, renderTooLoudOverlay } from './volume-render.js';
 import { getRandomTagline, getDangerLevel, triggerShake, triggerConfetti, getMeterGradient, getGlowShadow } from './volume-effects.js';
 import { initAudio, play, stop, setVolume } from './volume-audio.js';
 import { decompose } from './volume-render.js';
@@ -16,6 +16,7 @@ let confettiFired = false;
 let overlayTimeout = null;
 let draggedPiece = null;
 let selectedPiece = null; // 'dot' | 'bar' | 'shell' | null
+let isDraggingThumb = false;
 let tagline = getRandomTagline();
 
 // Touch DnD state
@@ -33,6 +34,11 @@ export function computeDecimal(lvls) {
 
 export function computeVolume(lvls) {
   return Math.min(computeDecimal(lvls), 100);
+}
+
+export function decimalToLevels(decimal) {
+  const clamped = Math.max(0, Math.min(100, Math.round(decimal)));
+  return [Math.floor(clamped / 20), clamped % 20];
 }
 
 export function addToLevel(currentValue, piece) {
@@ -59,20 +65,18 @@ function updateVolumeDisplay() {
   for (let i = 0; i < 2; i++) {
     const piecesEl = document.getElementById(`level-pieces-${i}`);
     if (piecesEl) piecesEl.innerHTML = renderLevelPieces(levels[i]);
-    // Update the numeric display in the level header
+    // Update the numeric display in the level header (ID-based lookup)
+    const numSpan = document.getElementById(`level-value-${i}`);
+    if (numSpan) numSpan.textContent = levels[i];
+    // Toggle empty-pulse animation
     const zone = document.querySelector(`[data-level="${i}"]`);
-    if (zone) {
-      const numSpan = zone.querySelector('.font-mono.text-stone-600');
-      if (numSpan) numSpan.textContent = levels[i];
-      // Toggle empty-pulse animation
-      zone.classList.toggle('vol-zone-empty', levels[i] === 0);
-    }
+    if (zone) zone.classList.toggle('vol-zone-empty', levels[i] === 0);
   }
 
-  // Update meter
+  // Update meter (horizontal — width, not height)
   const meterFill = document.getElementById('vol-meter-fill');
   if (meterFill) {
-    meterFill.style.height = `${Math.min(volume, 100)}%`;
+    meterFill.style.width = `${Math.min(volume, 100)}%`;
     meterFill.style.backgroundImage = getMeterGradient(volume);
   }
 
@@ -82,18 +86,27 @@ function updateVolumeDisplay() {
     meterContainer.style.boxShadow = getGlowShadow(volume);
   }
 
-  // Update readout
-  const readoutContainer = document.getElementById('vol-readout')?.parentElement;
-  if (readoutContainer) {
-    readoutContainer.innerHTML = renderDecimalReadout(decimal, volume, danger).replace(/<div class="text-center">/, '').replace(/<\/div>\s*$/, '');
+  // Sync thumb position (skip during drag — drag handler sets it directly)
+  const thumb = document.getElementById('vol-meter-thumb');
+  if (thumb && !isDraggingThumb) {
+    thumb.style.left = `${Math.min(volume, 100)}%`;
   }
+
+  // Update readout values
+  const totalPatch = document.getElementById('vol-total-patch');
+  if (totalPatch) totalPatch.innerHTML = renderReadoutTotal(decimal);
+  const volPatch = document.getElementById('vol-volume-patch');
+  if (volPatch) volPatch.innerHTML = renderReadoutVolume(volume, danger);
+
+  // Update scroll percentage display
+  const scrollPct = document.getElementById('vol-scroll-pct');
+  if (scrollPct) scrollPct.textContent = volume + '%';
 
   // Update page background
   const page = document.getElementById('vol-page');
   if (page) {
-    const parchmentClasses = ['bg-gradient-to-b', 'from-parchment', 'to-parchment-dark'];
-    page.classList.remove(...parchmentClasses, 'bg-red-100');
-    page.classList.add(...(decimal > 100 ? ['bg-red-100'] : parchmentClasses));
+    page.classList.remove('vol-bg', 'bg-red-100');
+    page.classList.add(decimal > 100 ? 'bg-red-100' : 'vol-bg');
   }
 
   // Update audio volume
@@ -389,6 +402,83 @@ function setupEvents() {
       return;
     }
   });
+
+  // ── Meter thumb drag ──────────────────────────
+  function applySliderPosition(clientX) {
+    const container = document.getElementById('vol-meter-container');
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+    const decimal = Math.round(pct);
+    levels = decimalToLevels(decimal);
+    // Move thumb immediately (no transition during drag)
+    const thumb = document.getElementById('vol-meter-thumb');
+    if (thumb) {
+      thumb.style.transition = 'none';
+      thumb.style.left = `${pct}%`;
+    }
+    updateVolumeDisplay();
+    // Autoplay on first interaction
+    if (!hasAutoStarted && decimal > 0) {
+      initAudio(); play(soundType);
+      setVolume(computeVolume(levels) / 100);
+      isPlaying = true; hasAutoStarted = true;
+      document.getElementById('vol-controls').innerHTML = renderControls(isPlaying, soundType);
+    }
+    // Rotate tagline occasionally
+    if (Math.random() < 0.3) {
+      tagline = getRandomTagline();
+      const taglineEl = document.getElementById('vol-tagline');
+      if (taglineEl) taglineEl.textContent = tagline;
+    }
+  }
+
+  function startThumbDrag(e, clientX) {
+    isDraggingThumb = true;
+    const thumb = document.getElementById('vol-meter-thumb');
+    if (thumb) thumb.classList.add('vol-thumb-dragging');
+    applySliderPosition(clientX);
+    e.preventDefault();
+  }
+
+  function stopThumbDrag() {
+    if (!isDraggingThumb) return;
+    isDraggingThumb = false;
+    const thumb = document.getElementById('vol-meter-thumb');
+    if (thumb) {
+      thumb.classList.remove('vol-thumb-dragging');
+      thumb.style.transition = '';
+    }
+  }
+
+  // Mouse: down on track/thumb, move+up on document
+  root.addEventListener('mousedown', (e) => {
+    const container = document.getElementById('vol-meter-container');
+    if (!container?.contains(e.target)) return;
+    startThumbDrag(e, e.clientX);
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDraggingThumb) return;
+    applySliderPosition(e.clientX);
+  });
+
+  document.addEventListener('mouseup', stopThumbDrag);
+
+  // Touch: start on track/thumb, move+end on document
+  root.addEventListener('touchstart', (e) => {
+    const container = document.getElementById('vol-meter-container');
+    if (!container?.contains(e.target)) return;
+    startThumbDrag(e, e.touches[0].clientX);
+  }, { passive: false });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isDraggingThumb) return;
+    applySliderPosition(e.touches[0].clientX);
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchend', stopThumbDrag);
 }
 
 function applyPiece(levelIdx, piece) {

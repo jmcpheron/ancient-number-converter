@@ -33,7 +33,7 @@ export function getDangerLevel(volume) {
 }
 
 export function getBackgroundClasses(volume) {
-  if (volume <= 100) return 'bg-gradient-to-b from-parchment to-parchment-dark';
+  if (volume <= 100) return 'vol-bg';
   return 'bg-red-100';
 }
 

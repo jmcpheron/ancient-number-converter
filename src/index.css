@@ -40,24 +40,152 @@ input[type="number"] {
   opacity: 0;
 }
 
-/* Volume control page utilities */
+/* ── Volume Control: Dark Temple Layout ──────── */
+
+/* Dark jungle page background */
+.vol-bg {
+  background:
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+    linear-gradient(168deg, #0D1B0E 0%, #1A2E1C 30%, #122214 60%, #0D1B0E 100%);
+  min-height: 100vh;
+}
+
+/* Main container — dark carved stone panel */
+.vol-sprite {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  aspect-ratio: 768 / 1376;
+  background:
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #2C1F10 0%, #38281A 15%, #2C1F10 50%, #241A0E 85%, #1A1208 100%);
+  border: 3px solid #4A3620;
+  border-radius: 1rem;
+  box-shadow:
+    0 0 60px rgba(0, 0, 0, 0.6),
+    inset 0 2px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Absolute region positioning base */
+.vol-region {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Recessed stone zone panel */
+.vol-zone-frame {
+  background:
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"),
+    linear-gradient(145deg, #1E1508 0%, #2C1F10 100%);
+  border: 2px solid #4A3620;
+  border-radius: 0.75rem;
+  box-shadow:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.5),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.04),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Raised stone panel (readouts, scroll) */
+.vol-stone-panel {
+  background:
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #3D2B18 0%, #2C1F10 100%);
+  border: 2px solid #4A3620;
+  border-radius: 0.5rem;
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.06),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.2),
+    0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Jade glow for active play button */
+.vol-jade-glow {
+  box-shadow: 0 0 12px rgba(59, 139, 94, 0.5), 0 0 24px rgba(59, 139, 94, 0.25);
+  animation: jadeGlow 2s ease-in-out infinite;
+}
+
+/* Dark-theme button */
+.vol-ctrl-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.5rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.vol-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.vol-ctrl-btn:active {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Horizontal glyph divider */
+.vol-glyph-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #4A3620 20%, #6B5030 50%, #4A3620 80%, transparent);
+}
+.vol-glyph-divider::after {
+  content: '◆';
+  display: block;
+  text-align: center;
+  margin-top: -9px;
+  font-size: 10px;
+  color: #6B5030;
+}
+
+/* Meter track well */
+.vol-meter-track {
+  background: #1A1208;
+  border: 2px solid #3D2B18;
+  border-radius: 9999px;
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* Draggable meter thumb */
+.vol-meter-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #E8D5B0, #A08060);
+  border: 2px solid #6B5030;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.3);
+  cursor: grab;
+  z-index: 10;
+  transition: left 0.3s ease-out;
+}
+.vol-meter-thumb:active,
+.vol-meter-thumb.vol-thumb-dragging {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 0 0 12px rgba(59, 139, 94, 0.5), 0 2px 8px rgba(0,0,0,0.5);
+  transition: left 0s, transform 0.1s;
+}
+
+/* ── Volume Control: Base Utilities ─────────── */
 .vol-shake {
   animation: shake 0.5s ease-in-out;
 }
 .vol-drop-active {
-  border-color: #2D6A4F !important;
-  box-shadow: 0 0 12px rgba(45, 106, 79, 0.3);
+  box-shadow: 0 0 16px rgba(59, 139, 94, 0.6), inset 0 0 12px rgba(59, 139, 94, 0.2);
 }
 .vol-drop-reject {
-  border-color: #f87171 !important;
-  box-shadow: 0 0 12px rgba(248, 113, 113, 0.3);
+  box-shadow: 0 0 16px rgba(248, 113, 113, 0.5), inset 0 0 12px rgba(248, 113, 113, 0.15);
 }
 .vol-dragging {
   opacity: 0.5;
 }
 .vol-piece-selected {
-  background-color: rgba(45, 106, 79, 0.15);
-  box-shadow: 0 0 0 2px #2D6A4F, 0 0 16px rgba(45, 106, 79, 0.4);
+  background-color: rgba(59, 139, 94, 0.25);
+  box-shadow: 0 0 0 2px #5CAD7E, 0 0 20px rgba(59, 139, 94, 0.5);
   border-radius: 0.5rem;
   transform: scale(1.08);
 }
@@ -66,7 +194,6 @@ input[type="number"] {
 }
 .vol-zone-target {
   animation: zoneTargetPulse 1.2s ease-in-out infinite;
-  border-color: rgba(45, 106, 79, 0.5) !important;
 }
 .vol-confetti {
   position: absolute;
