@@ -460,7 +460,9 @@ function setupEvents() {
     // user gestures on mobile.  touchmove is NOT, so waiting for the drag
     // to reach decimal > 0 would silently fail on iOS/Android.
     if (!hasAutoStarted) {
-      initAudio(); play(soundType);
+      unlockAudio();
+      initAudio();
+      play(soundType);
       setVolume(computeVolume(levels) / 100);
       isPlaying = true; hasAutoStarted = true;
       document.getElementById('vol-controls').innerHTML = renderControls(isPlaying, soundType);

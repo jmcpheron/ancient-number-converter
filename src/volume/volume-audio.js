@@ -23,16 +23,20 @@ function ensureResumed() {
  * before real audio will work.
  */
 export function unlockAudio() {
-  if (unlocked) return;
   initAudio();
+  if (unlocked && audioCtx.state === 'running') return;
   ensureResumed();
   // Play a silent buffer to fully unlock the audio pipeline on iOS
-  const silent = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
-  const src = audioCtx.createBufferSource();
-  src.buffer = silent;
-  src.connect(audioCtx.destination);
-  src.start();
-  unlocked = true;
+  try {
+    const silent = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+    const src = audioCtx.createBufferSource();
+    src.buffer = silent;
+    src.connect(audioCtx.destination);
+    src.start();
+  } catch {
+    // If unlock fails, allow a future user gesture to retry.
+  }
+  unlocked = audioCtx.state === 'running';
 }
 
 function stopSources() {
